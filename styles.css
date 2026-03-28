@@ -30,7 +30,7 @@ body {
     position: relative;
     width: 800px;
     height: 400px;
-    background: linear-gradient(to bottom, #5C94FC 80%, #228B22 80%, #228B22 100%);
+    background: linear-gradient(to bottom, #5C94FC 85%, #228B22 85%, #228B22 100%);
     border: 2px solid #333;
     overflow: hidden;
 }
@@ -42,6 +42,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-image: url('https://i.imgur.com/Wb1qfhK.png');
+    background-color: red;
+    border: 2px solid darkred;
     z-index: 100;
 }
 
@@ -56,34 +58,53 @@ body {
     background-size: 20px 20px;
     background-repeat: repeat;
     background-image: url('https://i.imgur.com/M6rwarW.png');
+    background-color: brown;
+    border: 1px solid black;
 }
 
 .platform.ground {
     position: absolute;
-    background-size: 20px 20px;
+    border: 1px solid black;
+    background-image:
+        url('https://i.imgur.com/pogC9x5.png'),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
+        linear-gradient(135deg, #8B6F47 0%, #A0826D 50%, #8B6F47 100%);
+    background-size: 20px 20px, 20px 20px, 20px 20px, 100% 100%;
     background-repeat: repeat;
-    background-image: url('https://i.imgur.com/pogC9x5.png');
 }
 
 .platform.floating {
     position: absolute;
-    background-size: 20px 20px;
+    border: 1px solid black;
+    background-image:
+        url('https://i.imgur.com/pogC9x5.png'),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
+        linear-gradient(135deg, #8B6F47 0%, #A0826D 50%, #8B6F47 100%);
+    background-size: 20px 20px, 20px 20px, 20px 20px, 100% 100%;
     background-repeat: repeat;
-    background-image: url('https://i.imgur.com/pogC9x5.png');
 }
 
 .platform.blue {
     position: absolute;
-    background-size: 20px 20px;
+    border: 1px solid black;
+    background-image:
+        url('https://i.imgur.com/fVscIbn.png'),
+        repeating-linear-gradient(90deg, transparent, transparent 19px, #1E3A4C 19px, #1E3A4C 20px),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, #1E3A4C 19px, #1E3A4C 20px),
+        linear-gradient(135deg, #4A7BA7 0%, #6495CD 50%, #4A7BA7 100%);
+    background-size: 20px 20px, 20px 20px, 20px 20px, 100% 100%;
     background-repeat: repeat;
-    background-image: url('https://i.imgur.com/fVscIbn.png');
 }
 
 .enemy.brown {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-image: url('https://i.imgur.com/KPO3fR9.png')
+    background-image: url('https://i.imgur.com/KPO3fR9.png');
+    background-color: #8B4513;
+    border: 2px solid #000;
 }
 
 .enemy.purple {
@@ -92,14 +113,18 @@ body {
     background-repeat: no-repeat;
     width: 20px;
     height: 20px;
-    background-image: url('https://i.imgur.com/SvV4ueD.png')
+    background-image: url('https://i.imgur.com/SvV4ueD.png');
+    background-color: #9370DB;
+    border: 2px solid #000;
 }
 
 .mushroom {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-image: url('https://i.imgur.com/0wMd92p.png')
+    background-image: url('https://i.imgur.com/0wMd92p.png');
+    background-color: #FF6B6B;
+    border: 1px solid #CC0000;
 }
 
 .coin {
@@ -107,6 +132,8 @@ body {
     width: 20px;
     height: 20px;
     background-image: url('https://i.imgur.com/wbKxhcd.png');
+    background-color: #FFD700;
+    border: 1px solid #FFA500;
     animation: coinSpin 1s linear infinite;
 }
 
@@ -123,14 +150,18 @@ body {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-image: url('https://i.imgur.com/gesQ1KP.png')
+    background-image: url('https://i.imgur.com/gesQ1KP.png');
+    background-color: #FFD700;
+    border: 2px solid #FFA500;
 }
 
 .surprise-block.hit {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-image: url('https://i.imgur.com/bdrLpi6.png')
+    background-image: url('https://i.imgur.com/bdrLpi6.png');
+    background-color: #CCCCCC;
+    border: 2px solid #888888;
 }
 
 .pipe {
@@ -148,6 +179,8 @@ body {
     width: 20px;
     height: 20px;
     background-image: url('https://i.imgur.com/ReTPiWY.png');
+    background-color: #8B4789;
+    border: 2px solid #4B1D4B;
 }
 
 .pipe-top-right {
@@ -159,6 +192,8 @@ body {
     width: 20px;
     height: 20px;
     background-image: url('https://i.imgur.com/hj2GK4n.png');
+    background-color: #8B4789;
+    border: 2px solid #4B1D4B;
 }
 
 .pipe-bottom {
@@ -170,6 +205,8 @@ body {
     width: 20px;
     height: 20px;
     background-image: url('https://i.imgur.com/c1cYSbt.png');
+    background-color: #8B4789;
+    border: 2px solid #4B1D4B;
 }
 
 .pipe-bottom-right {
@@ -181,12 +218,75 @@ body {
     width: 20px;
     height: 20px;
     background-image: url('https://i.imgur.com/nqQ79eI.png');
+    background-color: #8B4789;
+    border: 2px solid #4B1D4B;
 }
 
 .controls {
     margin-top: 15px;
     text-align: center;
     font-size: 14px;
+}
+
+.cloud {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    background-color: #FFFFFF;
+    border-radius: 30px;
+    box-shadow:
+        -15px 0 0 -5px #FFFFFF,
+        15px 0 0 -5px #FFFFFF,
+        0 0 5px rgba(0, 0, 0, 0.1);
+    opacity: 0.85;
+    z-index: 10;
+    animation: cloudFloat 8s ease-in-out infinite;
+}
+
+.cloud:nth-child(odd) {
+    animation-duration: 10s;
+    animation-delay: -2s;
+}
+
+@keyframes cloudFloat {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+}
+
+.pipe-arrow {
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 0 10px #FFA500, 0 0 20px #FF8C00;
+    animation: arrowBounce 0.8s ease-in-out infinite, arrowGlow 1.5s ease-in-out infinite;
+    z-index: 50;
+    user-select: none;
+    pointer-events: none;
+}
+
+@keyframes arrowBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes arrowGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px #FFA500, 0 0 20px #FF8C00;
+        color: #FFD700;
+    }
+    50% {
+        text-shadow: 0 0 20px #FFD700, 0 0 30px #FFA500, 0 0 40px #FF6347;
+        color: #FFFFFF;
+    }
 }
 
 #game-over {
