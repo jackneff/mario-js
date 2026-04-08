@@ -60,7 +60,7 @@ function renderLeaderboard(justAddedName = null) {
     return;
   }
 
-  board.forEach((entry, i) => {
+  board.slice(0, 3).forEach((entry, i) => {
     const li = document.createElement("li");
     li.textContent = `${entry.name} - ${entry.score}`;
 

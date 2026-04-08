@@ -3,13 +3,15 @@ import { gameObjects } from "./state.js"
 import { GRAVITY } from "./constants.js"
 
 export function spawnItemOnBox(block, type) {
-    const gameArea = document.getElementById("game-area")
+    const container = type === "coin"
+        ? document.getElementById("coins-layer")
+        : document.getElementById("game-area")
 
     const item = document.createElement("div")
     item.classList.add(type)
     item.style.left = block.x + "px"
     item.style.top = (block.y - 20) + "px"
-    gameArea.appendChild(item)
+    container.appendChild(item)
 
     const itemObj = {
         x: block.x,

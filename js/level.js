@@ -70,12 +70,13 @@ export function loadLevel(levelIndex) {
     })
 
     // Create coins
+    const coinsLayer = document.getElementById("coins-layer")
     level.coins.forEach((coinData, index) => {
         const coin = createElement("div", "coin", {
             left: coinData.x + "px",
             top: coinData.y + "px",
         })
-        gameArea.appendChild(coin)
+        coinsLayer.appendChild(coin)
         gameObjects.coins.push({
             element: coin,
             x: coinData.x,
@@ -109,7 +110,7 @@ export function loadLevel(levelIndex) {
     // Create pipes
     level.pipes.forEach((pipeData, index) => {
         const pipe = createElement("div", "pipe", {
-            left: pipeData.x + "px",
+            left: (pipeData.x - 20) + "px",
             top: pipeData.y + "px",
         })
 
@@ -132,9 +133,9 @@ export function loadLevel(levelIndex) {
 
         gameObjects.pipes.push({
             element: pipe,
-            x: pipeData.x,
+            x: pipeData.x - 20,
             y: pipeData.y,
-            width: 40,
+            width: 50,
             height: 40,
             id: "pipe-" + index
         })

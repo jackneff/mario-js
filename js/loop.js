@@ -48,6 +48,9 @@ export function update() {
                 player.y = platform.y - player.height
                 player.velocityY = 0
                 player.grounded = true
+            } else if (player.velocityY < 0) { //Jumping up - hit head on platform
+                player.y = platform.y + platform.height
+                player.velocityY = 0
             }
         }
     }
@@ -59,6 +62,9 @@ export function update() {
                 player.y = pipe.y - player.height
                 player.velocityY = 0
                 player.grounded = true
+            } else if (player.velocityY < 0) { // Jumping up - hit head on pipe
+                player.y = pipe.y + pipe.height
+                player.velocityY = 0
             }
         }
     }
