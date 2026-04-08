@@ -25,6 +25,8 @@ export function restartGame() {
     player.height = 20
 
     document.getElementById("game-over").style.display = "none"
+    document.getElementById("name-entry").style.display = "none"
+    document.getElementById("player-name").value = ""
     initGame()
 }
 

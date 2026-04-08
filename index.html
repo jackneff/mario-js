@@ -32,7 +32,19 @@
 
   <div id="game-over">
     <h2 id="game-over-title">Game Over</h2>
-    <p>Score:<span id="final-score">0</span></p>
+    <p>Score: <span id="final-score">0</span></p>
+
+    <div id="name-entry" style="display: none;">
+      <p>TOP SCORE! ENTER YOUR NAME:</p>
+      <input id="player-name" type="text" maxlength="3" placeholder="AAA" />
+      <button id="submit-name">OK</button>
+    </div>
+
+    <div id="leaderboard">
+      <h3>HIGH SCORES</h3>
+      <ol id="leaderboard-list"></ol>
+    </div>
+
     <button id="restart-button">Play Again</button>
   </div>
 
