@@ -1,12 +1,14 @@
 // Game loop and update logic
 import { gameState, player, gameObjects } from "./state.js"
-import { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED } from "./constants.js"
+import { GAME_SETTINGS } from "./settings.js"
 import { checkCollision } from "./collision.js"
 import { spawnItemOnBox } from "./entities.js"
 import { loseLife, nextLevel } from "./level.js"
 import { updateUI } from "./ui.js"
 import { updateElementPosition } from "./dom.js"
 import { playCoinSound, playSurpriseBlockSound, playPipeSound } from "./sounds.js"
+
+const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, BIG_TIMER_DURATION, INVINCIBILITY_DURATION } = GAME_SETTINGS
 
 export function gameLoop() {
     if (!gameState.gameRunning) return
@@ -102,8 +104,13 @@ export function update() {
                 enemy.element.remove()
                 player.velocityY = JUMP_FORCE * 0.7
                 gameState.score += 100
-            } else if (!player.invincible) {
-                // hit by enemy (but not if invincible)
+            } else if (player.invincible) {
+                // Defeat enemy just by touching while invincible
+                enemy.alive = false
+                enemy.element.remove()
+                gameState.score += 100
+            } else {
+                // hit by enemy (not invincible)
                 if (player.big) {
                     player.big = false
                     player.bigTimer = 0
@@ -157,7 +164,7 @@ export function update() {
                 mushroom.collected = true
                 mushroom.element.remove()
                 player.big = true
-                player.bigTimer = 600
+                player.bigTimer = BIG_TIMER_DURATION
                 player.element.classList.add("big")
                 player.width = 30
                 player.height = 30
@@ -173,7 +180,7 @@ export function update() {
                 star.collected = true
                 star.element.remove()
                 player.invincible = true
-                player.invincibilityTimer = 180 // 3 seconds at 60fps
+                player.invincibilityTimer = INVINCIBILITY_DURATION
                 player.element.classList.add("invincible")
                 gameState.score += 200
             }

@@ -58,12 +58,13 @@ export function loadLevel(levelIndex) {
     })
 
     // Create enemies
+    const enemiesLayer = document.getElementById("enemies-layer")
     level.enemies.forEach((enemyData, index) => {
         const enemy = createElement("div", `enemy ${enemyData.type}`, {
             left: enemyData.x + "px",
             top: enemyData.y + "px",
         })
-        gameArea.appendChild(enemy)
+        enemiesLayer.appendChild(enemy)
         gameObjects.enemies.push({
             element: enemy,
             x: enemyData.x,

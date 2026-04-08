@@ -3,6 +3,7 @@ import { gameState, player } from "./state.js"
 import { gameLoop } from "./loop.js"
 import { loadLevel } from "./level.js"
 import { setupInput } from "./input.js"
+import { GAME_SETTINGS } from "./settings.js"
 
 export function initGame() {
     loadLevel(gameState.level - 1)

@@ -51,7 +51,7 @@ export const levels = [
       { x: 570, y: 220 },
     ],
     surpriseBlocks: [
-      { x: 200, y: 200, type: "coin" },
+      { x: 90, y: 200, type: "coin" },
       { x: 400, y: 160, type: "mushroom" },
     ],
     pipes: [{ x: 750, y: 320 }],

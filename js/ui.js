@@ -14,9 +14,22 @@ export function showGameOver(won) {
 
   if (isTopTen(gameState.score)) {
     showNameEntry();
+  } else {
+    // If not in top 10, focus restart button immediately
+    setTimeout(() => {
+      document.getElementById("restart-button").focus();
+    }, 0);
   }
 
   document.getElementById("game-over").style.display = "block";
+
+  // Set up keyboard listener on restart button to trigger on any key press
+  const restartBtn = document.getElementById("restart-button");
+  const handleKeyPress = (e) => {
+    restartBtn.click();
+  };
+
+  restartBtn.addEventListener("keydown", handleKeyPress, { once: false });
 }
 
 function showNameEntry() {

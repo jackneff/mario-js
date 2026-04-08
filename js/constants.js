@@ -1,6 +1,9 @@
-// Game constants
-export const GRAVITY = 0.5;
-export const JUMP_FORCE = -12;
-export const MOVE_SPEED = 2.5;
-export const ENEMY_SPEED = 1;
-export const GAME_OVER_MESSAGE = "Congrats!  You won!";
+// Game constants - DEPRECATED: use settings.js instead
+// This file is kept for backward compatibility
+import { GAME_SETTINGS } from "./settings.js";
+
+export const GRAVITY = GAME_SETTINGS.GRAVITY;
+export const JUMP_FORCE = GAME_SETTINGS.JUMP_FORCE;
+export const MOVE_SPEED = GAME_SETTINGS.MOVE_SPEED;
+export const ENEMY_SPEED = GAME_SETTINGS.ENEMY_SPEED;
+export const GAME_OVER_MESSAGE = GAME_SETTINGS.GAME_OVER_MESSAGE;

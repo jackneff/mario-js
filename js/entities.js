@@ -1,7 +1,14 @@
 // Entity spawning
 import { gameObjects, gameState, player } from "./state.js"
-import { GRAVITY } from "./constants.js"
+import { GAME_SETTINGS } from "./settings.js"
 import { checkCollision } from "./collision.js"
+
+const {
+  MUSHROOM_GRAVITY,
+  MUSHROOM_POP_FRAMES,
+  MUSHROOM_INITIAL_VELOCITY,
+  COIN_FLOAT_DURATION
+} = GAME_SETTINGS
 
 export function spawnItemOnBox(block, type) {
     // On level 2, if Mario is big, spawn a power star instead of mushroom
@@ -41,9 +48,11 @@ export function spawnItemOnBox(block, type) {
         }
 
         // Pop up animation first, then fall
-        itemObj.velocityY = -3 // initial upward velocity
+        itemObj.velocityY = MUSHROOM_INITIAL_VELOCITY
+        itemObj.velocityX = 0 // horizontal velocity
+        itemObj.currentPlatform = null // track which platform it's on
         let popFrames = 0
-        const popDuration = 10 // frames for pop animation
+        const popDuration = MUSHROOM_POP_FRAMES
 
         function fall() {
             if (itemObj.collected) {
@@ -55,13 +64,18 @@ export function spawnItemOnBox(block, type) {
             if (popFrames < popDuration) {
                 // Pop phase - move up
                 itemObj.y += itemObj.velocityY
+            } else if (itemObj.currentPlatform) {
+                // On platform - move horizontally
+                itemObj.x += itemObj.velocityX
             } else {
                 // Fall phase - apply gravity
-                itemObj.velocityY += GRAVITY * 0.2
+                itemObj.velocityY += MUSHROOM_GRAVITY
                 itemObj.y += itemObj.velocityY
             }
 
             let onPlatform = false
+            let platformContact = null
+
             for (let platform of gameObjects.platforms) {
                 if (
                     itemObj.x < platform.x + platform.width &&
@@ -70,18 +84,28 @@ export function spawnItemOnBox(block, type) {
                     itemObj.y + itemObj.height <= platform.y + 5
                 ) {
                     onPlatform = true
+                    platformContact = platform
                     itemObj.y = platform.y - itemObj.height
                     itemObj.velocityY = 0
-                    item.remove()
+
+                    // Set horizontal velocity when first landing
+                    if (!itemObj.currentPlatform) {
+                        itemObj.velocityX = Math.random() > 0.5 ? 1 : -1 // random left or right
+                    }
+
+                    itemObj.currentPlatform = platform
                     break
                 }
             }
 
+            if (!onPlatform) {
+                itemObj.currentPlatform = null
+            }
+
+            item.style.left = itemObj.x + "px"
             item.style.top = itemObj.y + "px"
 
-            if (!onPlatform) {
-                requestAnimationFrame(fall)
-            }
+            requestAnimationFrame(fall)
         }
 
         fall()
@@ -93,7 +117,7 @@ export function spawnItemOnBox(block, type) {
             item.style.top = itemObj.y + "px"
             itemObj.frames++
 
-            if (itemObj.frames < 180) {
+            if (itemObj.frames < COIN_FLOAT_DURATION) {
                 requestAnimationFrame(floatUp)
             } else {
                 item.remove()
