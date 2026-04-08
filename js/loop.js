@@ -11,11 +11,20 @@ import { COIN_BLOCK_COUNT } from "./entities.js"
 
 const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, BIG_TIMER_DURATION, INVINCIBILITY_DURATION } = GAME_SETTINGS
 
+let animationFrameId = null
+
 export function gameLoop() {
     if (!gameState.gameRunning) return
 
     update()
-    requestAnimationFrame(gameLoop)
+    animationFrameId = requestAnimationFrame(gameLoop)
+}
+
+export function stopGameLoop() {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+        animationFrameId = null
+    }
 }
 
 export function update() {
@@ -24,10 +33,15 @@ export function update() {
     // Handle left and right
     if (gameState.keys["ArrowLeft"] || gameState.keys["KeyA"]) {
         player.velocityX = -MOVE_SPEED
+        player.element.classList.remove("eyes-right")
+        player.element.classList.add("eyes-left")
     } else if (gameState.keys["ArrowRight"] || gameState.keys["KeyD"]) {
         player.velocityX = MOVE_SPEED
+        player.element.classList.remove("eyes-left")
+        player.element.classList.add("eyes-right")
     } else {
         player.velocityX *= 0.8
+        player.element.classList.remove("eyes-left", "eyes-right")
     }
 
     // Handle jumping
@@ -119,8 +133,8 @@ export function update() {
                     player.big = false
                     player.bigTimer = 0
                     player.element.classList.remove("big")
-                    player.width = 20
-                    player.height = 20
+                    player.width = gameState.luigiMode ? 16 : 20
+                    player.height = gameState.luigiMode ? 24 : 20
                 } else if (player.grounded) {
                     loseLife()
                 }
@@ -188,8 +202,13 @@ export function update() {
                 player.big = true
                 player.bigTimer = BIG_TIMER_DURATION
                 player.element.classList.add("big")
-                player.width = 30
-                player.height = 30
+                if (gameState.luigiMode) {
+                    player.width = 20
+                    player.height = 38
+                } else {
+                    player.width = 30
+                    player.height = 30
+                }
                 gameState.score += 100
                 playMushroomSound()
             }

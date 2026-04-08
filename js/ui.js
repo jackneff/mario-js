@@ -1,7 +1,7 @@
 // UI functions
 import { gameState } from "./state.js";
 import { isTopTen, saveScore, getLeaderboard } from "./leaderboard.js";
-import { GAME_OVER_MESSAGE } from "./constants.js";
+import { GAME_SETTINGS } from "./settings.js";
 import { playWinSound } from "./sounds.js";
 
 function launchConfetti() {
@@ -45,7 +45,7 @@ export function showGameOver(won) {
     launchConfetti();
   }
   document.getElementById("game-over-title").textContent = won
-    ? GAME_OVER_MESSAGE
+    ? GAME_SETTINGS.GAME_OVER_MESSAGE
     : "Game over!";
   document.getElementById("final-score").textContent = gameState.score;
 

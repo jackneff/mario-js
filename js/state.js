@@ -4,7 +4,8 @@ export let gameState = {
     level: 1,
     lives: 3,
     gameRunning: true,
-    keys: {}
+    keys: {},
+    luigiMode: false
 }
 
 // Player object

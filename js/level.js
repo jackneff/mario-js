@@ -5,6 +5,7 @@ import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
 import { playDeathSound, playEnemyDefeatSound } from "./sounds.js"
 import { killEnemy } from "./entities.js"
+import { stopGameLoop } from "./loop.js"
 
 export function loadLevel(levelIndex) {
     if (levelIndex >= levels.length) {
@@ -35,6 +36,9 @@ export function loadLevel(levelIndex) {
 
     // Restore big and invincible classes if needed
     let classNames = []
+    if (gameState.luigiMode) {
+        classNames.push("luigi")
+    }
     if (player.big) {
         classNames.push("big")
     }
@@ -42,6 +46,15 @@ export function loadLevel(levelIndex) {
         classNames.push("invincible")
     }
     player.element.className = classNames.join(" ")
+
+    // Restore player dimensions based on big and luigi mode
+    if (player.big) {
+        player.width = gameState.luigiMode ? 20 : 30
+        player.height = gameState.luigiMode ? 38 : 30
+    } else {
+        player.width = gameState.luigiMode ? 16 : 20
+        player.height = gameState.luigiMode ? 24 : 20
+    }
 
     updateElementPosition(player.element, player.x, player.y)
 
@@ -244,6 +257,7 @@ export function nextLevel() {
 }
 
 export function loseLife() {
+    stopGameLoop()
     playDeathSound()
     gameState.lives--
     if (gameState.lives <= 0) {
@@ -254,8 +268,13 @@ export function loseLife() {
         player.invincible = false
         player.invincibilityTimer = 0
         player.element.className = ""
-        player.width = 20
-        player.height = 20
+        if (gameState.luigiMode) {
+            player.width = 16
+            player.height = 24
+        } else {
+            player.width = 20
+            player.height = 20
+        }
         loadLevel(gameState.level - 1)
     }
 }

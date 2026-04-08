@@ -1,5 +1,5 @@
 // Input handling
-import { gameState } from "./state.js"
+import { gameState, player } from "./state.js"
 
 const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight"]
 let konamiIndex = 0
@@ -12,12 +12,40 @@ function showInfinivesLivesToast() {
     setTimeout(() => toast.remove(), 2500)
 }
 
+function showLuigiToast() {
+    const toast = document.createElement("div")
+    toast.id = "konami-toast"
+    toast.textContent = "LUIGI MODE!"
+    document.querySelector(".game-container").appendChild(toast)
+    setTimeout(() => toast.remove(), 2500)
+}
+
 export function setupInput() {
     document.addEventListener("keydown", (e) => {
         gameState.keys[e.code] = true
 
         if (e.code === "Space") {
             e.preventDefault()
+        }
+
+        // Shift+L for Luigi mode
+        if (e.shiftKey && e.code === "KeyL") {
+            gameState.luigiMode = !gameState.luigiMode
+            const mario = document.getElementById("mario")
+            if (gameState.luigiMode) {
+                mario.classList.add("luigi")
+                if (!player.big) {
+                    player.width = 16
+                    player.height = 24
+                }
+                showLuigiToast()
+            } else {
+                mario.classList.remove("luigi")
+                if (!player.big) {
+                    player.width = 20
+                    player.height = 20
+                }
+            }
         }
 
         // Konami code tracker

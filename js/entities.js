@@ -78,12 +78,14 @@ export function spawnItemOnBox(block, type) {
             let onPlatform = false
             let platformContact = null
 
+            // Check platforms - wider tolerance for faster falling
             for (let platform of gameObjects.platforms) {
+                const mushroomBottom = itemObj.y + itemObj.height
                 if (
                     itemObj.x < platform.x + platform.width &&
                     itemObj.x + itemObj.width > platform.x &&
-                    itemObj.y + itemObj.height >= platform.y &&
-                    itemObj.y + itemObj.height <= platform.y + 5
+                    mushroomBottom >= platform.y &&
+                    mushroomBottom <= platform.y + 15
                 ) {
                     onPlatform = true
                     platformContact = platform
@@ -102,6 +104,20 @@ export function spawnItemOnBox(block, type) {
 
             if (!onPlatform) {
                 itemObj.currentPlatform = null
+            }
+
+            // Remove if off screen
+            if (itemObj.y > 450 || itemObj.y < -50) {
+                item.remove()
+                if (gameObjects.mushrooms) {
+                    const idx = gameObjects.mushrooms.indexOf(itemObj)
+                    if (idx > -1) gameObjects.mushrooms.splice(idx, 1)
+                }
+                if (gameObjects.powerStars) {
+                    const idx = gameObjects.powerStars.indexOf(itemObj)
+                    if (idx > -1) gameObjects.powerStars.splice(idx, 1)
+                }
+                return
             }
 
             item.style.left = itemObj.x + "px"
