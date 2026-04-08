@@ -1,321 +1,377 @@
 body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #5C94FC, #87CEEB);
-    font-family: 'Courier New', monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #5c94fc, #87ceeb);
+  font-family: "Courier New", monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
 }
 
 .game-container {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 4px 8px #000;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px #000;
 }
 
 .ui {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    min-width: 800px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  min-width: 800px;
 }
 
 #game-area {
-    position: relative;
-    width: 800px;
-    height: 400px;
-    background: linear-gradient(to bottom, #5C94FC 85%, #228B22 85%, #228B22 100%);
-    border: 2px solid #333;
-    overflow: hidden;
+  position: relative;
+  width: 800px;
+  height: 400px;
+  background: linear-gradient(
+    to bottom,
+    #5c94fc 85%,
+    #228b22 85%,
+    #228b22 100%
+  );
+  border: 2px solid #333;
+  overflow: hidden;
 }
 
 #mario {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-image: url('https://i.imgur.com/Wb1qfhK.png');
-    background-color: red;
-    border: 2px solid darkred;
-    z-index: 100;
+  position: absolute;
+  width: 25px;
+  height: 20px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://i.imgur.com/Wb1qfhK.png");
+  background-color: red;
+  border: 2px solid darkred;
+  z-index: 100;
 }
 
 #mario.big {
-    width: 30px;
-    height: 30px;
-    background-image: url('https://i.imgur.com/Wb1qfhK.png');;
+  width: 30px;
+  height: 30px;
+  background-image: url("https://i.imgur.com/Wb1qfhK.png");
 }
 
 .platform {
-    position: absolute;
-    background-size: 20px 20px;
-    background-repeat: repeat;
-    background-image: url('https://i.imgur.com/M6rwarW.png');
-    background-color: brown;
-    border: 1px solid black;
+  position: absolute;
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  background-image: url("https://i.imgur.com/M6rwarW.png");
+  background-color: brown;
+  border: 1px solid black;
 }
 
 .platform.ground {
-    position: absolute;
-    border: 1px solid black;
-    background-image:
-        url('https://i.imgur.com/pogC9x5.png'),
-        repeating-linear-gradient(90deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
-        repeating-linear-gradient(0deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
-        linear-gradient(135deg, #8B6F47 0%, #A0826D 50%, #8B6F47 100%);
-    background-size: 20px 20px, 20px 20px, 20px 20px, 100% 100%;
-    background-repeat: repeat;
+  position: absolute;
+  border: 1px solid black;
+  background-image:
+    url("https://i.imgur.com/pogC9x5.png"),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      #5c4033 19px,
+      #5c4033 20px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      #5c4033 19px,
+      #5c4033 20px
+    ),
+    linear-gradient(135deg, #8b6f47 0%, #a0826d 50%, #8b6f47 100%);
+  background-size:
+    20px 20px,
+    20px 20px,
+    20px 20px,
+    100% 100%;
+  background-repeat: repeat;
 }
 
 .platform.floating {
-    position: absolute;
-    border: 1px solid black;
-    background-image:
-        url('https://i.imgur.com/pogC9x5.png'),
-        repeating-linear-gradient(90deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
-        repeating-linear-gradient(0deg, transparent, transparent 19px, #5C4033 19px, #5C4033 20px),
-        linear-gradient(135deg, #8B6F47 0%, #A0826D 50%, #8B6F47 100%);
-    background-size: 20px 20px, 20px 20px, 20px 20px, 100% 100%;
-    background-repeat: repeat;
+  position: absolute;
+  border: 1px solid black;
+  background-image:
+    url("https://i.imgur.com/pogC9x5.png"),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      #5c4033 19px,
+      #5c4033 20px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      #5c4033 19px,
+      #5c4033 20px
+    ),
+    linear-gradient(135deg, #8b6f47 0%, #a0826d 50%, #8b6f47 100%);
+  background-size:
+    20px 20px,
+    20px 20px,
+    20px 20px,
+    100% 100%;
+  background-repeat: repeat;
 }
 
 .platform.blue {
-    position: absolute;
-    border: 1px solid black;
-    background-image:
-        url('https://i.imgur.com/fVscIbn.png'),
-        repeating-linear-gradient(90deg, transparent, transparent 19px, #1E3A4C 19px, #1E3A4C 20px),
-        repeating-linear-gradient(0deg, transparent, transparent 19px, #1E3A4C 19px, #1E3A4C 20px),
-        linear-gradient(135deg, #4A7BA7 0%, #6495CD 50%, #4A7BA7 100%);
-    background-size: 20px 20px, 20px 20px, 20px 20px, 100% 100%;
-    background-repeat: repeat;
+  position: absolute;
+  border: 1px solid black;
+  background-image:
+    url("https://i.imgur.com/fVscIbn.png"),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      #1e3a4c 19px,
+      #1e3a4c 20px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      #1e3a4c 19px,
+      #1e3a4c 20px
+    ),
+    linear-gradient(135deg, #4a7ba7 0%, #6495cd 50%, #4a7ba7 100%);
+  background-size:
+    20px 20px,
+    20px 20px,
+    20px 20px,
+    100% 100%;
+  background-repeat: repeat;
 }
 
 .enemy.brown {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/KPO3fR9.png');
-    background-color: #8B4513;
-    border: 2px solid #000;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://i.imgur.com/KPO3fR9.png");
+  background-color: #8b4513;
+  border: 2px solid #000;
 }
 
 .enemy.purple {
-    position: absolute;
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/SvV4ueD.png');
-    background-color: #9370DB;
-    border: 2px solid #000;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://i.imgur.com/SvV4ueD.png");
+  background-color: #9370db;
+  border: 2px solid #000;
 }
 
 .mushroom {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/0wMd92p.png');
-    background-color: #FF6B6B;
-    border: 1px solid #CC0000;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://i.imgur.com/0wMd92p.png");
+  background-color: #ff6b6b;
+  border: 1px solid #cc0000;
 }
 
 .coin {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/wbKxhcd.png');
-    background-color: #FFD700;
-    border: 1px solid #FFA500;
-    animation: coinSpin 1s linear infinite;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://i.imgur.com/wbKxhcd.png");
+  background-color: #ffd700;
+  border: 1px solid #ffa500;
+  animation: coinSpin 1s linear infinite;
 }
 
 @keyframes coinSpin {
-    0% {
-        transform: rotateY(0deg);
-    }
-    100% {
-        transform: rotateY(360deg)
-    }
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
 }
 
 .surprise-block {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/gesQ1KP.png');
-    background-color: #FFD700;
-    border: 2px solid #FFA500;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://i.imgur.com/gesQ1KP.png");
+  background-color: #ffd700;
+  border: 2px solid #ffa500;
 }
 
 .surprise-block.hit {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/bdrLpi6.png');
-    background-color: #CCCCCC;
-    border: 2px solid #888888;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url("https://i.imgur.com/bdrLpi6.png");
+  background-color: #cccccc;
+  border: 2px solid #888888;
 }
 
 .pipe {
-    position: absolute;
-    width: 40px;
-    height: 40px;
+  position: absolute;
+  width: 50px;
+  height: 40px;
 }
 
 .pipe-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/ReTPiWY.png');
-    background-color: #8B4789;
-    border: 2px solid #4B1D4B;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 20px;
+  background: linear-gradient(135deg, #a855a8 0%, #8b4789 50%, #6b3570 100%);
+  border: 2px solid #4b1d4b;
+  border-radius: 0 0 8px 0;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2), inset -1px -1px 0 rgba(0,0,0,0.3);
 }
 
 .pipe-top-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/hj2GK4n.png');
-    background-color: #8B4789;
-    border: 2px solid #4B1D4B;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 20px;
+  background: linear-gradient(225deg, #a855a8 0%, #8b4789 50%, #6b3570 100%);
+  border: 2px solid #4b1d4b;
+  border-radius: 0 0 0 8px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2), inset -1px -1px 0 rgba(0,0,0,0.3);
 }
 
 .pipe-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/c1cYSbt.png');
-    background-color: #8B4789;
-    border: 2px solid #4B1D4B;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 25px;
+  height: 20px;
+  background: linear-gradient(45deg, #a855a8 0%, #8b4789 50%, #6b3570 100%);
+  border: 2px solid #4b1d4b;
+  border-radius: 8px 0 0 0;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2), inset -1px -1px 0 rgba(0,0,0,0.3);
 }
 
 .pipe-bottom-right {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 20px;
-    background-image: url('https://i.imgur.com/nqQ79eI.png');
-    background-color: #8B4789;
-    border: 2px solid #4B1D4B;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 25px;
+  height: 20px;
+  background: linear-gradient(315deg, #a855a8 0%, #8b4789 50%, #6b3570 100%);
+  border: 2px solid #4b1d4b;
+  border-radius: 0 8px 0 0;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2), inset -1px -1px 0 rgba(0,0,0,0.3);
 }
 
 .controls {
-    margin-top: 15px;
-    text-align: center;
-    font-size: 14px;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
 }
 
 .cloud {
-    position: absolute;
-    width: 60px;
-    height: 30px;
-    background-color: #FFFFFF;
-    border-radius: 30px;
-    box-shadow:
-        -15px 0 0 -5px #FFFFFF,
-        15px 0 0 -5px #FFFFFF,
-        0 0 5px rgba(0, 0, 0, 0.1);
-    opacity: 0.85;
-    z-index: 10;
-    animation: cloudFloat 8s ease-in-out infinite;
+  position: absolute;
+  width: 60px;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow:
+    -15px 0 0 -5px #ffffff,
+    15px 0 0 -5px #ffffff,
+    0 0 5px rgba(0, 0, 0, 0.1);
+  opacity: 0.85;
+  z-index: 10;
+  animation: cloudFloat 8s ease-in-out infinite;
 }
 
 .cloud:nth-child(odd) {
-    animation-duration: 10s;
-    animation-delay: -2s;
+  animation-duration: 10s;
+  animation-delay: -2s;
 }
 
 @keyframes cloudFloat {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(20px);
-    }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
 }
 
 .pipe-arrow {
-    position: absolute;
-    font-size: 30px;
-    font-weight: bold;
-    color: #FFD700;
-    text-shadow: 0 0 10px #FFA500, 0 0 20px #FF8C00;
-    animation: arrowBounce 0.8s ease-in-out infinite, arrowGlow 1.5s ease-in-out infinite;
-    z-index: 50;
-    user-select: none;
-    pointer-events: none;
+  position: absolute;
+  font-size: 30px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow:
+    0 0 10px #ffa500,
+    0 0 20px #ff8c00;
+  animation:
+    arrowBounce 0.8s ease-in-out infinite,
+    arrowGlow 1.5s ease-in-out infinite;
+  z-index: 50;
+  user-select: none;
+  pointer-events: none;
 }
 
 @keyframes arrowBounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-15px);
-    }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 @keyframes arrowGlow {
-    0%, 100% {
-        text-shadow: 0 0 10px #FFA500, 0 0 20px #FF8C00;
-        color: #FFD700;
-    }
-    50% {
-        text-shadow: 0 0 20px #FFD700, 0 0 30px #FFA500, 0 0 40px #FF6347;
-        color: #FFFFFF;
-    }
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px #ffa500,
+      0 0 20px #ff8c00;
+    color: #ffd700;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ffd700,
+      0 0 30px #ffa500,
+      0 0 40px #ff6347;
+    color: #ffffff;
+  }
 }
 
 #game-over {
-    position: absolute;
-    top: 50%;
-    border: 3px solid #fff;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    z-index: 1000;
-    display: none;
+  position: absolute;
+  top: 50%;
+  border: 3px solid #fff;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+  display: none;
 }
 
 #restart-button {
-    background-color: #ff6b6b;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    margin: 10px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 10px;
 }
 
 #restart-button:hover {
-    background-color: #ff5252;
+  background-color: #ff5252;
 }
-
-
-
-
-
