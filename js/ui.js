@@ -1,70 +1,79 @@
 // UI functions
-import { gameState } from "./state.js"
-import { isTopTen, saveScore, getLeaderboard } from "./leaderboard.js"
+import { gameState } from "./state.js";
+import { isTopTen, saveScore, getLeaderboard } from "./leaderboard.js";
+import { GAME_OVER_MESSAGE } from "./constants.js";
 
 export function showGameOver(won) {
-    gameState.gameRunning = false
-    document.getElementById("game-over-title").textContent = won ? "Congratulations Olivia! You won!" : "Game over!"
-    document.getElementById("final-score").textContent = gameState.score
+  gameState.gameRunning = false;
+  document.getElementById("game-over-title").textContent = won
+    ? GAME_OVER_MESSAGE
+    : "Game over!";
+  document.getElementById("final-score").textContent = gameState.score;
 
-    renderLeaderboard()
+  renderLeaderboard();
 
-    if (isTopTen(gameState.score)) {
-        showNameEntry()
-    }
+  if (isTopTen(gameState.score)) {
+    showNameEntry();
+  }
 
-    document.getElementById("game-over").style.display = "block"
+  document.getElementById("game-over").style.display = "block";
 }
 
 function showNameEntry() {
-    const nameEntry = document.getElementById("name-entry")
-    const playerName = document.getElementById("player-name")
-    const submitBtn = document.getElementById("submit-name")
+  const nameEntry = document.getElementById("name-entry");
+  const playerName = document.getElementById("player-name");
+  const submitBtn = document.getElementById("submit-name");
 
-    nameEntry.style.display = "block"
-    playerName.focus()
+  // Remove old listeners to prevent duplicates
+  playerName.replaceWith(playerName.cloneNode(true));
+  submitBtn.replaceWith(submitBtn.cloneNode(true));
 
-    const handleSubmit = () => {
-        const name = playerName.value.trim() || "AAA"
-        saveScore(name, gameState.score)
-        renderLeaderboard(name)
-        nameEntry.style.display = "none"
-        playerName.removeEventListener("keypress", handleEnter)
-        submitBtn.removeEventListener("click", handleSubmit)
-    }
+  // Re-query after cloning
+  const playerNameNew = document.getElementById("player-name");
+  const submitBtnNew = document.getElementById("submit-name");
 
-    const handleEnter = (e) => {
-        if (e.key === "Enter") handleSubmit()
-    }
+  nameEntry.style.display = "block";
+  playerNameNew.focus();
 
-    playerName.addEventListener("keypress", handleEnter)
-    submitBtn.addEventListener("click", handleSubmit)
+  const handleSubmit = () => {
+    const name = playerNameNew.value.trim() || "AAA";
+    saveScore(name, gameState.score);
+    renderLeaderboard(name);
+    nameEntry.style.display = "none";
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") handleSubmit();
+  };
+
+  playerNameNew.addEventListener("keypress", handleEnter);
+  submitBtnNew.addEventListener("click", handleSubmit);
 }
 
 function renderLeaderboard(justAddedName = null) {
-    const board = getLeaderboard()
-    const list = document.getElementById("leaderboard-list")
-    list.innerHTML = ""
+  const board = getLeaderboard();
+  const list = document.getElementById("leaderboard-list");
+  list.innerHTML = "";
 
-    if (board.length === 0) {
-        list.innerHTML = "<li>(no scores yet)</li>"
-        return
+  if (board.length === 0) {
+    list.innerHTML = "<li>(no scores yet)</li>";
+    return;
+  }
+
+  board.forEach((entry, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${entry.name} - ${entry.score}`;
+
+    if (justAddedName && entry.name === justAddedName) {
+      li.classList.add("new-score");
     }
 
-    board.forEach((entry, i) => {
-        const li = document.createElement("li")
-        li.textContent = `${entry.name} - ${entry.score}`
-
-        if (justAddedName && entry.name === justAddedName) {
-            li.classList.add("new-score")
-        }
-
-        list.appendChild(li)
-    })
+    list.appendChild(li);
+  });
 }
 
 export function updateUI() {
-    document.getElementById("score").textContent = gameState.score
-    document.getElementById("level").textContent = gameState.level
-    document.getElementById("lives").textContent = gameState.lives
+  document.getElementById("score").textContent = gameState.score;
+  document.getElementById("level").textContent = gameState.level;
+  document.getElementById("lives").textContent = gameState.lives;
 }
