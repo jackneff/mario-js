@@ -29,12 +29,15 @@ export function loadLevel(levelIndex) {
     player.velocityX = 0
     player.velocityY = 0
 
-    // Restore big class if needed
+    // Restore big and invincible classes if needed
+    let classNames = []
     if (player.big) {
-        player.element.className = "big"
-    } else {
-        player.element.className = ""
+        classNames.push("big")
     }
+    if (player.invincible) {
+        classNames.push("invincible")
+    }
+    player.element.className = classNames.join(" ")
 
     updateElementPosition(player.element, player.x, player.y)
 
@@ -172,6 +175,7 @@ export function clearLevel() {
     gameObjects.surpriseBlocks = []
     gameObjects.pipes = []
     gameObjects.mushrooms = []
+    gameObjects.powerStars = []
 }
 
 export function nextLevel() {

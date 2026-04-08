@@ -102,8 +102,8 @@ export function update() {
                 enemy.element.remove()
                 player.velocityY = JUMP_FORCE * 0.7
                 gameState.score += 100
-            } else {
-                // hit by enemy
+            } else if (!player.invincible) {
+                // hit by enemy (but not if invincible)
                 if (player.big) {
                     player.big = false
                     player.bigTimer = 0
@@ -163,6 +163,29 @@ export function update() {
                 player.height = 30
                 gameState.score += 100
             }
+        }
+    }
+
+    // Power star collection
+    if (gameObjects.powerStars) {
+        for (let star of gameObjects.powerStars) {
+            if (!star.collected && checkCollision(player, star)) {
+                star.collected = true
+                star.element.remove()
+                player.invincible = true
+                player.invincibilityTimer = 180 // 3 seconds at 60fps
+                player.element.classList.add("invincible")
+                gameState.score += 200
+            }
+        }
+    }
+
+    // Update invincibility timer
+    if (player.invincible) {
+        player.invincibilityTimer--
+        if (player.invincibilityTimer <= 0) {
+            player.invincible = false
+            player.element.classList.remove("invincible")
         }
     }
 

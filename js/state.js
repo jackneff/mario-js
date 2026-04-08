@@ -18,7 +18,9 @@ export let player = {
     velocityY: 0,
     grounded: false,
     big: false,
-    bigTimer: 0
+    bigTimer: 0,
+    invincible: false,
+    invincibilityTimer: 0
 }
 
 // Game objects arrays
@@ -27,5 +29,7 @@ export let gameObjects = {
     enemies: [],
     coins: [],
     surpriseBlocks: [],
-    pipes: []
+    pipes: [],
+    mushrooms: [],
+    powerStars: []
 }

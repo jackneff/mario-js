@@ -1,15 +1,21 @@
 // Entity spawning
-import { gameObjects } from "./state.js"
+import { gameObjects, gameState, player } from "./state.js"
 import { GRAVITY } from "./constants.js"
 import { checkCollision } from "./collision.js"
 
 export function spawnItemOnBox(block, type) {
-    const container = type === "coin"
+    // On level 2, if Mario is big, spawn a power star instead of mushroom
+    let spawnType = type
+    if (type === "mushroom" && gameState.level === 2 && player.big) {
+        spawnType = "power-star"
+    }
+
+    const container = spawnType === "coin"
         ? document.getElementById("coins-layer")
         : document.getElementById("game-area")
 
     const item = document.createElement("div")
-    item.classList.add(type)
+    item.classList.add(spawnType)
     item.style.left = block.x + "px"
     item.style.top = block.y + "px"
     container.appendChild(item)
@@ -25,9 +31,14 @@ export function spawnItemOnBox(block, type) {
         collected: false
     }
 
-    if (type === "mushroom") {
-        gameObjects.mushrooms = gameObjects.mushrooms || []
-        gameObjects.mushrooms.push(itemObj)
+    if (type === "mushroom" || spawnType === "power-star") {
+        if (spawnType === "power-star") {
+            gameObjects.powerStars = gameObjects.powerStars || []
+            gameObjects.powerStars.push(itemObj)
+        } else {
+            gameObjects.mushrooms = gameObjects.mushrooms || []
+            gameObjects.mushrooms.push(itemObj)
+        }
 
         // Pop up animation first, then fall
         itemObj.velocityY = -3 // initial upward velocity
