@@ -267,13 +267,13 @@ export function loseLife() {
         player.bigTimer = 0
         player.invincible = false
         player.invincibilityTimer = 0
-        player.element.className = ""
-        if (gameState.luigiMode) {
-            player.width = 16
-            player.height = 24
+        player.element.className = gameState.luigiMode ? "luigi" : ""
+        if (player.big) {
+            player.width = gameState.luigiMode ? 20 : 30
+            player.height = gameState.luigiMode ? 38 : 30
         } else {
-            player.width = 20
-            player.height = 20
+            player.width = gameState.luigiMode ? 16 : 20
+            player.height = gameState.luigiMode ? 24 : 20
         }
         loadLevel(gameState.level - 1)
     }

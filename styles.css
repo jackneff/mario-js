@@ -171,6 +171,36 @@ body {
     -3px 9px 0 -5px #000;
 }
 
+/* Luigi mode - small (normal) size */
+#mario.luigi {
+  width: 16px;
+  height: 24px;
+  background: linear-gradient(
+    to bottom,
+    #00cc00 0%,
+    #00cc00 40%,
+    #ffdd00 40%,
+    #ffdd00 60%,
+    #00cc00 60%,
+    #00cc00 100%
+  );
+  border-color: darkgreen;
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    inset 2px 0 0 rgba(255, 255, 255, 0.3),
+    0 8px 0 -4px #000,
+    2px 8px 0 -4px #000,
+    -2px 8px 0 -4px #000;
+}
+
+#mario.luigi::before {
+  top: 8px;
+}
+
+#mario.luigi::after {
+  top: 8px;
+}
+
 #mario.luigi.big {
   width: 20px;
   height: 38px;
