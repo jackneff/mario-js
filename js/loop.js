@@ -130,21 +130,38 @@ export function update() {
 
     // Surprise blocks
     for (let block of gameObjects.surpriseBlocks) {
-        if (!block.hit && checkCollision(player, block) && player.velocityY < 0) {
-            block.hit = true
-            block.element.classList.add("hit")
-            spawnItemOnBox(block, block.type)
-            playSurpriseBlockSound()
+        if (checkCollision(player, block)) {
+            if (!block.hit && player.velocityY < 0) {
+                block.hit = true
+                block.element.classList.add("hit")
+                spawnItemOnBox(block, block.type)
+                playSurpriseBlockSound()
 
-            if (block.type === "mushroom") {
+                if (block.type === "coin") {
+                    gameState.score += 50
+                }
+            }
+
+            // Head collision - stop upward momentum
+            if (player.velocityY < 0) {
+                player.y = block.y + block.height
+                player.velocityY = 0
+            }
+        }
+    }
+
+    // Mushroom collection
+    if (gameObjects.mushrooms) {
+        for (let mushroom of gameObjects.mushrooms) {
+            if (!mushroom.collected && checkCollision(player, mushroom)) {
+                mushroom.collected = true
+                mushroom.element.remove()
                 player.big = true
                 player.bigTimer = 600
                 player.element.classList.add("big")
                 player.width = 30
                 player.height = 30
                 gameState.score += 100
-            } else if (block.type === "coin") {
-                gameState.score += 50
             }
         }
     }

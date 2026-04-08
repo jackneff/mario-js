@@ -23,14 +23,19 @@ export function loadLevel(levelIndex) {
         gameArea.style.background = "linear-gradient(to bottom, #5C94FC 85%, #228B22 85%, #228B22 100%)"
     }
 
-    // Reset player
+    // Reset player position and velocity (but preserve big state)
     player.x = 50
     player.y = 340
     player.velocityX = 0
     player.velocityY = 0
-    player.big = false
-    player.bigTimer = 0
-    player.element.className = ""
+
+    // Restore big class if needed
+    if (player.big) {
+        player.element.className = "big"
+    } else {
+        player.element.className = ""
+    }
+
     updateElementPosition(player.element, player.x, player.y)
 
     // Create platforms
@@ -166,6 +171,7 @@ export function clearLevel() {
     gameObjects.coins = []
     gameObjects.surpriseBlocks = []
     gameObjects.pipes = []
+    gameObjects.mushrooms = []
 }
 
 export function nextLevel() {
@@ -173,9 +179,6 @@ export function nextLevel() {
     if (gameState.level > levels.length) {
         showGameOver(true)
     } else {
-        player.element.classList.remove("big")
-        player.width = 20
-        player.height = 20
         loadLevel(gameState.level - 1)
     }
 }
