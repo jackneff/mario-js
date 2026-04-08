@@ -1,5 +1,5 @@
 // UI functions
-import { gameState } from "./state.js";
+import { gameState, elements } from "./state.js";
 import { isTopTen, saveScore, getLeaderboard } from "./leaderboard.js";
 import { GAME_SETTINGS } from "./settings.js";
 import { playWinSound } from "./sounds.js";
@@ -34,7 +34,6 @@ function launchConfetti() {
     container.appendChild(piece);
   }
 
-  // Clean up after animation
   setTimeout(() => container.remove(), 5000);
 }
 
@@ -44,45 +43,42 @@ export function showGameOver(won) {
     playWinSound();
     launchConfetti();
   }
-  document.getElementById("game-over-title").textContent = won
+  elements.gameOverTitle.textContent = won
     ? GAME_SETTINGS.GAME_OVER_MESSAGE
     : "Game over!";
-  document.getElementById("final-score").textContent = gameState.score;
+  elements.finalScore.textContent = gameState.score;
 
   renderLeaderboard();
 
   if (isTopTen(gameState.score)) {
     showNameEntry();
   } else {
-    // If not in top 10, focus restart button immediately
     setTimeout(() => {
-      document.getElementById("restart-button").focus();
+      elements.restartButton.focus();
     }, 0);
   }
 
-  document.getElementById("game-over").style.display = "block";
+  elements.gameOver.style.display = "block";
 
-  // Set up keyboard listener on restart button to trigger on any key press
-  const restartBtn = document.getElementById("restart-button");
-  const handleKeyPress = (e) => {
-    restartBtn.click();
+  const handleKeyPress = () => {
+    elements.restartButton.click();
   };
 
-  restartBtn.addEventListener("keydown", handleKeyPress, { once: false });
+  elements.restartButton.addEventListener("keydown", handleKeyPress, { once: false });
 }
 
 function showNameEntry() {
-  const nameEntry = document.getElementById("name-entry");
-  const playerName = document.getElementById("player-name");
-  const submitBtn = document.getElementById("submit-name");
+  const nameEntry = elements.nameEntry;
+  const playerName = elements.playerName;
+  const submitBtn = elements.submitName;
 
-  // Remove old listeners to prevent duplicates
   playerName.replaceWith(playerName.cloneNode(true));
   submitBtn.replaceWith(submitBtn.cloneNode(true));
 
-  // Re-query after cloning
-  const playerNameNew = document.getElementById("player-name");
-  const submitBtnNew = document.getElementById("submit-name");
+  elements.playerName = document.getElementById("player-name")
+  elements.submitName = document.getElementById("submit-name")
+  const playerNameNew = elements.playerName
+  const submitBtnNew = elements.submitName
 
   nameEntry.style.display = "block";
   playerNameNew.focus();
@@ -104,7 +100,7 @@ function showNameEntry() {
 
 function renderLeaderboard(justAddedName = null) {
   const board = getLeaderboard();
-  const list = document.getElementById("leaderboard-list");
+  const list = elements.leaderboardList;
   list.innerHTML = "";
 
   if (board.length === 0) {
@@ -125,7 +121,7 @@ function renderLeaderboard(justAddedName = null) {
 }
 
 export function updateUI() {
-  document.getElementById("score").textContent = gameState.score;
-  document.getElementById("level").textContent = gameState.level;
-  document.getElementById("lives").textContent = gameState.lives;
+  elements.scoreEl.textContent = gameState.score;
+  elements.levelEl.textContent = gameState.level;
+  elements.livesEl.textContent = gameState.lives;
 }

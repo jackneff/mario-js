@@ -266,8 +266,12 @@ body {
 }
 
 @keyframes enterPipe {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(44px); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(44px);
+  }
 }
 
 @keyframes rainbowFlicker {
@@ -536,7 +540,18 @@ body {
   width: 32px;
   height: 32px;
   background: linear-gradient(135deg, #ffff00 0%, #ffd700 100%);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
   box-shadow: 0 0 10px #ffff00;
   z-index: 30;
   animation: powerStarRotate 1s linear infinite;
@@ -626,7 +641,14 @@ body {
   left: -4px;
   width: 58px;
   height: 16px;
-  background: linear-gradient(to right, #1a5c1a 0%, #4caf4c 25%, #5dc85d 50%, #3d9e3d 75%, #1a5c1a 100%);
+  background: linear-gradient(
+    to right,
+    #1a5c1a 0%,
+    #4caf4c 25%,
+    #5dc85d 50%,
+    #3d9e3d 75%,
+    #1a5c1a 100%
+  );
   border: 2px solid #0d3d0d;
   border-radius: 4px 4px 0 0;
   box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.2);
@@ -639,7 +661,14 @@ body {
   left: 4px;
   width: 42px;
   height: 26px;
-  background: linear-gradient(to right, #1a5c1a 0%, #3d9e3d 25%, #4caf4c 50%, #2e7d2e 80%, #1a5c1a 100%);
+  background: linear-gradient(
+    to right,
+    #1a5c1a 0%,
+    #3d9e3d 25%,
+    #4caf4c 50%,
+    #2e7d2e 80%,
+    #1a5c1a 100%
+  );
   border: 2px solid #0d3d0d;
   border-top: none;
 }
@@ -654,9 +683,15 @@ body {
   position: absolute;
   background: #c4956a;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  filter: drop-shadow(-3px 0 0 #6b3f1f) drop-shadow(3px 0 0 #6b3f1f) drop-shadow(0 -3px 0 #6b3f1f);
+  filter: drop-shadow(-3px 0 0 #6b3f1f) drop-shadow(3px 0 0 #6b3f1f)
+    drop-shadow(0 -3px 0 #6b3f1f);
   z-index: 2;
   pointer-events: none;
+}
+
+.mountain.night {
+  filter: drop-shadow(-3px 0 0 #05050a) drop-shadow(3px 0 0 #05050a) drop-shadow(0 -3px 0 #05050a)
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.25));
 }
 
 .night-star {
@@ -683,8 +718,15 @@ body {
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.2; transform: scale(0.5); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(0.5);
+  }
 }
 
 .crescent-moon {
@@ -700,8 +742,13 @@ body {
 }
 
 @keyframes moonGlow {
-  0%, 100% { filter: drop-shadow(0 0 12px rgba(255, 253, 200, 0.8)); }
-  50% { filter: drop-shadow(0 0 24px rgba(255, 253, 200, 1)); }
+  0%,
+  100% {
+    filter: drop-shadow(0 0 12px rgba(255, 253, 200, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(255, 253, 200, 1));
+  }
 }
 
 .cloud {
@@ -789,9 +836,17 @@ body {
 }
 
 @keyframes confettiFall {
-  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
 }
 
 #konami-toast {
@@ -815,8 +870,14 @@ body {
 }
 
 @keyframes toastPop {
-  0%   { transform: translateX(-50%) scale(0.5); opacity: 0; }
-  100% { transform: translateX(-50%) scale(1);   opacity: 1; }
+  0% {
+    transform: translateX(-50%) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
 }
 
 .moon-smash {
@@ -824,10 +885,22 @@ body {
 }
 
 @keyframes moonSmash {
-  0%   { transform: scale(1);    filter: drop-shadow(0 0 12px rgba(255, 253, 200, 0.8)); }
-  30%  { transform: scale(2.2);  filter: drop-shadow(0 0 40px rgba(255, 220, 100, 1)); }
-  60%  { transform: scale(1.5);  filter: drop-shadow(0 0 60px rgba(255, 180, 50, 1)); }
-  100% { transform: scale(1);    filter: drop-shadow(0 0 12px rgba(255, 253, 200, 0.8)); }
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 12px rgba(255, 253, 200, 0.8));
+  }
+  30% {
+    transform: scale(2.2);
+    filter: drop-shadow(0 0 40px rgba(255, 220, 100, 1));
+  }
+  60% {
+    transform: scale(1.5);
+    filter: drop-shadow(0 0 60px rgba(255, 180, 50, 1));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 12px rgba(255, 253, 200, 0.8));
+  }
 }
 
 #game-over {
@@ -846,16 +919,20 @@ body {
 }
 
 #restart-button {
-  background-color: #ff6b6b;
+  background-color: #1d12b6;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
-  margin: 10px;
+  font-weight: bold;
+  padding: 1.5rem 5rem;
+  margin: 20px;
+  cursor: pointer;
+  font-family: "Courier New", monospace;s
 }
 
 #restart-button:hover {
-  background-color: #ff5252;
+  background-color: #160e8d;
 }
 
 #name-entry {

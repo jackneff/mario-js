@@ -1,5 +1,9 @@
 // Game settings and configuration
 export const GAME_SETTINGS = {
+  // Screen
+  SCREEN_WIDTH: 800,
+  DEATH_BOUNDARY: 400,
+
   // Physics
   GRAVITY: 0.5,
   JUMP_FORCE: -12,
@@ -7,26 +11,25 @@ export const GAME_SETTINGS = {
   ENEMY_SPEED: 1,
 
   // Player mechanics
-  BIG_TIMER_DURATION: 600, // frames
-  INVINCIBILITY_DURATION: 300, // frames (5 seconds at 60fps)
+  INVINCIBILITY_DURATION: 300,
 
   // Mushroom mechanics
-  MUSHROOM_GRAVITY: 0.2, // gravity multiplier
-  MUSHROOM_POP_FRAMES: 10, // frames for pop animation
-  MUSHROOM_INITIAL_VELOCITY: -3, // initial upward velocity
-  MUSHROOM_SLIDE_SPEED: 1, // horizontal speed when on platform
-
-  // Power star mechanics
-  POWER_STAR_GRAVITY: 0.2, // gravity multiplier
-  POWER_STAR_POP_FRAMES: 10, // frames for pop animation
-  POWER_STAR_INITIAL_VELOCITY: -3, // initial upward velocity
-  POWER_STAR_SLIDE_SPEED: 1, // horizontal speed when on platform
+  MUSHROOM_GRAVITY: 0.2,
+  MUSHROOM_POP_FRAMES: 10,
+  MUSHROOM_INITIAL_VELOCITY: -3,
 
   // Coin mechanics
-  COIN_FLOAT_DURATION: 60, // frames (1 second)
-  COIN_BLOCK_COUNT: 5, // how many coins a coin block holds
+  COIN_FLOAT_DURATION: 60,
+  COIN_BLOCK_COUNT: 5,
 
   // UI
   GAME_OVER_MESSAGE: "Congrats!  You won!",
   LEADERBOARD_SIZE: 3,
 };
+
+export function getPlayerDimensions(big, luigi) {
+  if (big) {
+    return { width: luigi ? 20 : 30, height: luigi ? 38 : 30 }
+  }
+  return { width: luigi ? 16 : 20, height: luigi ? 24 : 20 }
+}

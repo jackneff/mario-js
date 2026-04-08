@@ -1,11 +1,12 @@
 // Level loading and management
-import { gameState, player, gameObjects } from "./state.js"
+import { gameState, player, gameObjects, elements } from "./state.js"
 import { levels } from "./levels.js"
 import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
 import { playDeathSound, playEnemyDefeatSound } from "./sounds.js"
 import { killEnemy } from "./entities.js"
 import { stopGameLoop } from "./loop.js"
+import { getPlayerDimensions } from "./settings.js"
 
 export function loadLevel(levelIndex) {
     if (levelIndex >= levels.length) {
@@ -17,7 +18,7 @@ export function loadLevel(levelIndex) {
     clearLevel()
 
     const level = levels[levelIndex]
-    const gameArea = document.getElementById("game-area")
+    const gameArea = elements.gameArea
 
     // Set background theme per level
     if (levelIndex === 1) {
@@ -45,25 +46,22 @@ export function loadLevel(levelIndex) {
     if (player.invincible) {
         classNames.push("invincible")
     }
-    player.element.className = classNames.join(" ")
+    elements.mario.className = classNames.join(" ")
 
     // Restore player dimensions based on big and luigi mode
-    if (player.big) {
-        player.width = gameState.luigiMode ? 20 : 30
-        player.height = gameState.luigiMode ? 38 : 30
-    } else {
-        player.width = gameState.luigiMode ? 16 : 20
-        player.height = gameState.luigiMode ? 24 : 20
-    }
+    const dims = getPlayerDimensions(player.big, gameState.luigiMode)
+    player.width = dims.width
+    player.height = dims.height
 
-    updateElementPosition(player.element, player.x, player.y)
+    updateElementPosition(elements.mario, player.x, player.y)
 
     // Create mountains first so everything else renders in front
     if (level.mountains) {
         level.mountains.forEach((mountainData) => {
             const color = mountainData.color || "#c4956a"
             const edgeColor = mountainData.edgeColor || "#6b3f1f"
-            const mountain = createElement("div", "mountain", {
+            const isNight = levelIndex === 2
+            const mountain = createElement("div", isNight ? "mountain night" : "mountain", {
                 left: mountainData.x + "px",
                 bottom: "60px",
                 width: mountainData.width + "px",
@@ -92,7 +90,7 @@ export function loadLevel(levelIndex) {
     })
 
     // Create enemies
-    const enemiesLayer = document.getElementById("enemies-layer")
+    const enemiesLayer = elements.enemiesLayer
     level.enemies.forEach((enemyData, index) => {
         const enemy = createElement("div", `enemy ${enemyData.type}`, {
             left: enemyData.x + "px",
@@ -113,7 +111,7 @@ export function loadLevel(levelIndex) {
     })
 
     // Create coins
-    const coinsLayer = document.getElementById("coins-layer")
+    const coinsLayer = elements.coinsLayer
     level.coins.forEach((coinData, index) => {
         const coin = createElement("div", "coin", {
             left: coinData.x + "px",
@@ -234,8 +232,7 @@ export function clearLevel() {
     })
 
     // Remove decorative elements not tracked in gameObjects
-    const gameArea = document.getElementById("game-area")
-    gameArea.querySelectorAll(".mountain, .cloud, .night-star, .crescent-moon, .pipe-arrow").forEach(el => el.remove())
+    elements.gameArea.querySelectorAll(".mountain, .cloud, .night-star, .crescent-moon, .pipe-arrow").forEach(el => el.remove())
 
     // Mutate the existing gameObjects instead of reassigning
     gameObjects.platforms = []
@@ -264,17 +261,12 @@ export function loseLife() {
         showGameOver(false)
     } else {
         player.big = false
-        player.bigTimer = 0
         player.invincible = false
         player.invincibilityTimer = 0
-        player.element.className = gameState.luigiMode ? "luigi" : ""
-        if (player.big) {
-            player.width = gameState.luigiMode ? 20 : 30
-            player.height = gameState.luigiMode ? 38 : 30
-        } else {
-            player.width = gameState.luigiMode ? 16 : 20
-            player.height = gameState.luigiMode ? 24 : 20
-        }
+        elements.mario.className = gameState.luigiMode ? "luigi" : ""
+        const dims = getPlayerDimensions(player.big, gameState.luigiMode)
+        player.width = dims.width
+        player.height = dims.height
         loadLevel(gameState.level - 1)
     }
 }

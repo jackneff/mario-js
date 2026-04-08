@@ -1,5 +1,5 @@
 // Entity spawning
-import { gameObjects, gameState, player } from "./state.js"
+import { gameObjects, gameState, player, elements } from "./state.js"
 import { GAME_SETTINGS } from "./settings.js"
 import { checkCollision } from "./collision.js"
 
@@ -19,8 +19,8 @@ export function spawnItemOnBox(block, type) {
     }
 
     const container = spawnType === "coin"
-        ? document.getElementById("coins-layer")
-        : document.getElementById("game-area")
+        ? elements.coinsLayer
+        : elements.gameArea
 
     const item = document.createElement("div")
     item.classList.add(spawnType)
@@ -151,9 +151,6 @@ export function spawnItemOnBox(block, type) {
 export function killEnemy(enemy) {
     enemy.alive = false
     enemy.element.classList.add("dead")
-    console.log("Animation:", getComputedStyle(enemy.element).animation)
-    console.log("Transform:", getComputedStyle(enemy.element).transform)
-    
     setTimeout(() => {
         enemy.element.remove()
     }, 800)

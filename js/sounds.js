@@ -180,7 +180,7 @@ export function playDeathSound() {
       osc.type = 'square';
       osc.frequency.value = freq;
       const t = ctx.currentTime + i * 0.08;
-      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.setValueAtTime(0.15, t);
       gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
       osc.start(t);
       osc.stop(t + 0.1);

@@ -1,9 +1,9 @@
 // Entry point
-import { gameState, player } from "./state.js"
+import { gameState, player, elements } from "./state.js"
 import { gameLoop, stopGameLoop } from "./loop.js"
 import { loadLevel } from "./level.js"
 import { setupInput } from "./input.js"
-import { GAME_SETTINGS } from "./settings.js"
+import { GAME_SETTINGS, getPlayerDimensions } from "./settings.js"
 
 export function initGame() {
     stopGameLoop()
@@ -12,10 +12,8 @@ export function initGame() {
 }
 
 export function restartGame() {
-    // Stop any existing game loop
     stopGameLoop()
 
-    // Mutate gameState instead of reassigning
     Object.assign(gameState, {
         score: 0,
         level: 1,
@@ -24,24 +22,24 @@ export function restartGame() {
         keys: {},
         luigiMode: false
     })
-    player.big = false
-    player.bigTimer = 0
-    player.element.classList.remove("big")
-    player.element.classList.remove("luigi")
-    player.width = 20
-    player.height = 20
 
-    document.getElementById("game-over").style.display = "none"
-    document.getElementById("name-entry").style.display = "none"
-    document.getElementById("player-name").value = ""
+    const dims = getPlayerDimensions(false, false)
+    player.big = false
+    player.invincible = false
+    player.invincibilityTimer = 0
+    player.width = dims.width
+    player.height = dims.height
+
+    elements.mario.classList.remove("big", "luigi")
+
+    elements.gameOver.style.display = "none"
+    elements.nameEntry.style.display = "none"
+    elements.playerName.value = ""
+
     initGame()
 }
 
-// Setup input listeners
+elements.init()
 setupInput()
-
-// Restart button handler
-document.getElementById("restart-button").addEventListener("click", restartGame)
-
-// Start Game
+elements.restartButton.addEventListener("click", restartGame)
 initGame()

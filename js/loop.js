@@ -1,6 +1,6 @@
 // Game loop and update logic
-import { gameState, player, gameObjects } from "./state.js"
-import { GAME_SETTINGS } from "./settings.js"
+import { gameState, player, gameObjects, elements } from "./state.js"
+import { GAME_SETTINGS, getPlayerDimensions } from "./settings.js"
 import { checkCollision } from "./collision.js"
 import { spawnItemOnBox, killEnemy } from "./entities.js"
 import { loseLife, nextLevel } from "./level.js"
@@ -9,7 +9,7 @@ import { updateElementPosition } from "./dom.js"
 import { playCoinSound, playSurpriseBlockSound, playPipeSound, playEnemyDefeatSound, playMushroomSound, playStarSound } from "./sounds.js"
 import { COIN_BLOCK_COUNT } from "./entities.js"
 
-const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, BIG_TIMER_DURATION, INVINCIBILITY_DURATION } = GAME_SETTINGS
+const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, INVINCIBILITY_DURATION, SCREEN_WIDTH, DEATH_BOUNDARY } = GAME_SETTINGS
 
 let animationFrameId = null
 
@@ -33,15 +33,15 @@ export function update() {
     // Handle left and right
     if (gameState.keys["ArrowLeft"] || gameState.keys["KeyA"]) {
         player.velocityX = -MOVE_SPEED
-        player.element.classList.remove("eyes-right")
-        player.element.classList.add("eyes-left")
+        elements.mario.classList.remove("eyes-right")
+        elements.mario.classList.add("eyes-left")
     } else if (gameState.keys["ArrowRight"] || gameState.keys["KeyD"]) {
         player.velocityX = MOVE_SPEED
-        player.element.classList.remove("eyes-left")
-        player.element.classList.add("eyes-right")
+        elements.mario.classList.remove("eyes-left")
+        elements.mario.classList.add("eyes-right")
     } else {
         player.velocityX *= 0.8
-        player.element.classList.remove("eyes-left", "eyes-right")
+        elements.mario.classList.remove("eyes-left", "eyes-right")
     }
 
     // Handle jumping
@@ -61,7 +61,7 @@ export function update() {
 
     // Clamp to screen bounds
     if (player.x < 0) { player.x = 0; player.velocityX = 0 }
-    if (player.x + player.width > 800) { player.x = 800 - player.width; player.velocityX = 0 }
+    if (player.x + player.width > SCREEN_WIDTH) { player.x = SCREEN_WIDTH - player.width; player.velocityX = 0 }
 
     // Platform collision
     player.grounded = false
@@ -108,7 +108,7 @@ export function update() {
             }
         }
 
-        if (!onPlatform || enemy.x <= 0 || enemy.x >= 800) {
+        if (!onPlatform || enemy.x <= 0 || enemy.x >= SCREEN_WIDTH) {
             enemy.direction *= -1
         }
 
@@ -131,10 +131,10 @@ export function update() {
                 // hit by enemy (not invincible)
                 if (player.big) {
                     player.big = false
-                    player.bigTimer = 0
-                    player.element.classList.remove("big")
-                    player.width = gameState.luigiMode ? 16 : 20
-                    player.height = gameState.luigiMode ? 24 : 20
+                    elements.mario.classList.remove("big")
+                    const dims = getPlayerDimensions(false, gameState.luigiMode)
+                    player.width = dims.width
+                    player.height = dims.height
                 } else if (player.grounded) {
                     loseLife()
                 }
@@ -147,7 +147,7 @@ export function update() {
         if (!coin.collected && checkCollision(player, coin)) {
             coin.collected = true
             coin.element.style.display = 'none'
-            setTimeout(() => coin.element.remove(), 0)
+            coin.element.remove()
             gameState.score += 50
             playCoinSound()
         }
@@ -200,15 +200,10 @@ export function update() {
                 mushroom.collected = true
                 mushroom.element.remove()
                 player.big = true
-                player.bigTimer = BIG_TIMER_DURATION
-                player.element.classList.add("big")
-                if (gameState.luigiMode) {
-                    player.width = 20
-                    player.height = 38
-                } else {
-                    player.width = 30
-                    player.height = 30
-                }
+                elements.mario.classList.add("big")
+                const dims = getPlayerDimensions(true, gameState.luigiMode)
+                player.width = dims.width
+                player.height = dims.height
                 gameState.score += 100
                 playMushroomSound()
             }
@@ -223,19 +218,19 @@ export function update() {
                 star.element.remove()
                 player.invincible = true
                 player.invincibilityTimer = INVINCIBILITY_DURATION
-                player.element.classList.add("invincible")
+                elements.mario.classList.add("invincible")
                 gameState.score += 200
                 playStarSound()
             }
         }
     }
 
-    // Update invincibility timer
+    // Invincibility timer
     if (player.invincible) {
         player.invincibilityTimer--
         if (player.invincibilityTimer <= 0) {
             player.invincible = false
-            player.element.classList.remove("invincible")
+            elements.mario.classList.remove("invincible")
         }
     }
 
@@ -249,11 +244,11 @@ export function update() {
                 gameState.keys["ArrowDown"]) {
                 player.enteringPipe = true
                 player.velocityX = 0
-                player.element.classList.add("entering-pipe")
+                elements.mario.classList.add("entering-pipe")
                 playPipeSound()
                 setTimeout(() => {
                     player.enteringPipe = false
-                    player.element.classList.remove("entering-pipe")
+                    elements.mario.classList.remove("entering-pipe")
                     nextLevel()
                 }, 600)
             }
@@ -261,11 +256,11 @@ export function update() {
     }
 
     // Fall death
-    if (player.y > 400) {
+    if (player.y > DEATH_BOUNDARY) {
         loseLife()
     }
 
-    updateElementPosition(player.element, player.x, player.y)
+    updateElementPosition(elements.mario, player.x, player.y)
 
     updateUI()
 }

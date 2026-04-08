@@ -1,21 +1,14 @@
 // Input handling
-import { gameState, player } from "./state.js"
+import { gameState, player, elements } from "./state.js"
+import { getPlayerDimensions } from "./settings.js"
 
 const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight"]
 let konamiIndex = 0
 
-function showInfinivesLivesToast() {
+function showToast(message, id) {
     const toast = document.createElement("div")
-    toast.id = "konami-toast"
-    toast.textContent = "∞ LIVES!"
-    document.querySelector(".game-container").appendChild(toast)
-    setTimeout(() => toast.remove(), 2500)
-}
-
-function showLuigiToast() {
-    const toast = document.createElement("div")
-    toast.id = "konami-toast"
-    toast.textContent = "LUIGI MODE!"
+    toast.id = id
+    toast.textContent = message
     document.querySelector(".game-container").appendChild(toast)
     setTimeout(() => toast.remove(), 2500)
 }
@@ -31,19 +24,20 @@ export function setupInput() {
         // Shift+L for Luigi mode
         if (e.shiftKey && e.code === "KeyL") {
             gameState.luigiMode = !gameState.luigiMode
-            const mario = document.getElementById("mario")
             if (gameState.luigiMode) {
-                mario.classList.add("luigi")
+                elements.mario.classList.add("luigi")
                 if (!player.big) {
-                    player.width = 16
-                    player.height = 24
+                    const dims = getPlayerDimensions(false, true)
+                    player.width = dims.width
+                    player.height = dims.height
                 }
-                showLuigiToast()
+                showToast("LUIGI MODE!", "luigi-toast")
             } else {
-                mario.classList.remove("luigi")
+                elements.mario.classList.remove("luigi")
                 if (!player.big) {
-                    player.width = 20
-                    player.height = 20
+                    const dims = getPlayerDimensions(false, false)
+                    player.width = dims.width
+                    player.height = dims.height
                 }
             }
         }
@@ -54,7 +48,7 @@ export function setupInput() {
             if (konamiIndex === KONAMI.length) {
                 konamiIndex = 0
                 gameState.lives = Infinity
-                showInfinivesLivesToast()
+                showToast("∞ LIVES!", "konami-toast")
             }
         } else {
             konamiIndex = e.code === KONAMI[0] ? 1 : 0
