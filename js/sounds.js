@@ -77,14 +77,111 @@ export function playCoinSound() {
 }
 
 export function playSurpriseBlockSound() {
-  // Two quick tones
+  // Punchy "bam" thud with a rising shimmer
   setTimeout(() => {
-    playTone(523, 0.1, 'square'); // C5
-    setTimeout(() => playTone(659, 0.1, 'square'), 100); // E5
+    const ctx = getAudioContext();
+
+    // Low thud punch
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(120, ctx.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.08);
+    gain1.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+    osc1.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime + 0.1);
+
+    // Rising sparkle shimmer
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.type = 'square';
+    osc2.frequency.setValueAtTime(400, ctx.currentTime + 0.05);
+    osc2.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.25);
+    gain2.gain.setValueAtTime(0.0, ctx.currentTime);
+    gain2.gain.setValueAtTime(0.15, ctx.currentTime + 0.05);
+    gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+    osc2.start(ctx.currentTime + 0.05);
+    osc2.stop(ctx.currentTime + 0.25);
   }, 0);
 }
 
 export function playPipeSound() {
   // Descending pitch
   setTimeout(() => playSweep(600, 200, 0.3, 'sine'), 0);
+}
+
+export function playDeathSound() {
+  // Descending "dun dun duuun" dramatic fall
+  setTimeout(() => {
+    const ctx = getAudioContext();
+    const notes = [494, 466, 440, 415, 392, 370, 349, 294]; // descending chromatic
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'square';
+      osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.08;
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+      osc.start(t);
+      osc.stop(t + 0.1);
+    });
+  }, 0);
+}
+
+export function playMushroomSound() {
+  // Warm rising "power up" sound
+  setTimeout(() => {
+    const ctx = getAudioContext();
+    const notes = [330, 392, 494, 659]; // E4, G4, B4, E5
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'square';
+      osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.08;
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+      osc.start(t);
+      osc.stop(t + 0.15);
+    });
+  }, 0);
+}
+
+export function playStarSound() {
+  // Magical sparkling arpeggio
+  setTimeout(() => {
+    const ctx = getAudioContext();
+    const notes = [523, 659, 784, 1047, 784, 1047, 1319]; // C5 up to E6
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.07;
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+      osc.start(t);
+      osc.stop(t + 0.15);
+    });
+  }, 0);
+}
+
+export function playEnemyDefeatSound() {
+  // Reuse the old surprise block sound - two quick tones
+  setTimeout(() => {
+    playTone(523, 0.1, 'square'); // C5
+    setTimeout(() => playTone(659, 0.1, 'square'), 100); // E5
+  }, 0);
 }

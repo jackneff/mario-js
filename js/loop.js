@@ -6,7 +6,7 @@ import { spawnItemOnBox } from "./entities.js"
 import { loseLife, nextLevel } from "./level.js"
 import { updateUI } from "./ui.js"
 import { updateElementPosition } from "./dom.js"
-import { playCoinSound, playSurpriseBlockSound, playPipeSound } from "./sounds.js"
+import { playCoinSound, playSurpriseBlockSound, playPipeSound, playEnemyDefeatSound, playMushroomSound, playStarSound } from "./sounds.js"
 
 const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, BIG_TIMER_DURATION, INVINCIBILITY_DURATION } = GAME_SETTINGS
 
@@ -104,11 +104,13 @@ export function update() {
                 enemy.element.remove()
                 player.velocityY = JUMP_FORCE * 0.7
                 gameState.score += 100
+                playEnemyDefeatSound()
             } else if (player.invincible) {
                 // Defeat enemy just by touching while invincible
                 enemy.alive = false
                 enemy.element.remove()
                 gameState.score += 100
+                playEnemyDefeatSound()
             } else {
                 // hit by enemy (not invincible)
                 if (player.big) {
@@ -169,6 +171,7 @@ export function update() {
                 player.width = 30
                 player.height = 30
                 gameState.score += 100
+                playMushroomSound()
             }
         }
     }
@@ -183,6 +186,7 @@ export function update() {
                 player.invincibilityTimer = INVINCIBILITY_DURATION
                 player.element.classList.add("invincible")
                 gameState.score += 200
+                playStarSound()
             }
         }
     }

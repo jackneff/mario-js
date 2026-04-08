@@ -3,6 +3,7 @@ import { gameState, player, gameObjects } from "./state.js"
 import { levels } from "./levels.js"
 import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
+import { playDeathSound } from "./sounds.js"
 
 export function loadLevel(levelIndex) {
     if (levelIndex >= levels.length) {
@@ -189,6 +190,7 @@ export function nextLevel() {
 }
 
 export function loseLife() {
+    playDeathSound()
     gameState.lives--
     if (gameState.lives <= 0) {
         showGameOver(false)
