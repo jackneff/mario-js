@@ -115,6 +115,58 @@ export function playPipeSound() {
   setTimeout(() => playSweep(600, 200, 0.3, 'sine'), 0);
 }
 
+export function playWinSound() {
+  setTimeout(() => {
+    const ctx = getAudioContext();
+
+    // Quick ascending run
+    const run = [523, 659, 784, 1047]; // C5, E5, G5, C6
+    run.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'square';
+      osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.07;
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+      osc.start(t);
+      osc.stop(t + 0.1);
+    });
+
+    // Big triumphant chord after the run
+    const chord = [523, 659, 784, 1047]; // C major chord
+    const chordStart = ctx.currentTime + 0.32;
+    chord.forEach((freq) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'square';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.18, chordStart);
+      gain.gain.setValueAtTime(0.18, chordStart + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, chordStart + 0.9);
+      osc.start(chordStart);
+      osc.stop(chordStart + 0.9);
+    });
+
+    // Shimmer on top
+    const shimmer = ctx.createOscillator();
+    const shimmerGain = ctx.createGain();
+    shimmer.connect(shimmerGain);
+    shimmerGain.connect(ctx.destination);
+    shimmer.type = 'sine';
+    shimmer.frequency.setValueAtTime(2093, chordStart); // C7
+    shimmer.frequency.exponentialRampToValueAtTime(1760, chordStart + 0.9); // A6
+    shimmerGain.gain.setValueAtTime(0.12, chordStart);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.01, chordStart + 0.9);
+    shimmer.start(chordStart);
+    shimmer.stop(chordStart + 0.9);
+  }, 0);
+}
+
 export function playDeathSound() {
   // Descending "dun dun duuun" dramatic fall
   setTimeout(() => {

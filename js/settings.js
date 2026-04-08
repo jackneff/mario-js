@@ -23,7 +23,8 @@ export const GAME_SETTINGS = {
   POWER_STAR_SLIDE_SPEED: 1, // horizontal speed when on platform
 
   // Coin mechanics
-  COIN_FLOAT_DURATION: 180, // frames
+  COIN_FLOAT_DURATION: 60, // frames (1 second)
+  COIN_BLOCK_COUNT: 5, // how many coins a coin block holds
 
   // UI
   GAME_OVER_MESSAGE: "Congrats!  You won!",

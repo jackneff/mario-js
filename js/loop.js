@@ -7,6 +7,7 @@ import { loseLife, nextLevel } from "./level.js"
 import { updateUI } from "./ui.js"
 import { updateElementPosition } from "./dom.js"
 import { playCoinSound, playSurpriseBlockSound, playPipeSound, playEnemyDefeatSound, playMushroomSound, playStarSound } from "./sounds.js"
+import { COIN_BLOCK_COUNT } from "./entities.js"
 
 const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, BIG_TIMER_DURATION, INVINCIBILITY_DURATION } = GAME_SETTINGS
 
@@ -18,6 +19,8 @@ export function gameLoop() {
 }
 
 export function update() {
+    if (player.enteringPipe) return
+
     // Handle left and right
     if (gameState.keys["ArrowLeft"] || gameState.keys["KeyA"]) {
         player.velocityX = -MOVE_SPEED
@@ -42,6 +45,10 @@ export function update() {
     player.x += player.velocityX
     player.y += player.velocityY
 
+    // Clamp to screen bounds
+    if (player.x < 0) { player.x = 0; player.velocityX = 0 }
+    if (player.x + player.width > 800) { player.x = 800 - player.width; player.velocityX = 0 }
+
     // Platform collision
     player.grounded = false
     for (let platform of gameObjects.platforms) {
@@ -57,16 +64,13 @@ export function update() {
         }
     }
 
-    // Pipe collision
+    // Pipe collision - top only, Mario can jump up through from below
     for (let pipe of gameObjects.pipes) {
         if (checkCollision(player, pipe)) {
-            if (player.velocityY > 0) { // Falling down onto Pipe
+            if (player.velocityY > 0 && player.y + player.height - player.velocityY <= pipe.y) {
                 player.y = pipe.y - player.height
                 player.velocityY = 0
                 player.grounded = true
-            } else if (player.velocityY < 0) { // Jumping up - hit head on pipe
-                player.y = pipe.y + pipe.height
-                player.velocityY = 0
             }
         }
     }
@@ -141,14 +145,32 @@ export function update() {
     for (let block of gameObjects.surpriseBlocks) {
         if (checkCollision(player, block)) {
             if (!block.hit && player.velocityY < 0) {
-                block.hit = true
-                block.element.classList.add("hit")
+                // Init coin counter lazily on first hit
+                if (block.type === "coin" && block.coinsLeft === undefined) {
+                    block.coinsLeft = COIN_BLOCK_COUNT
+                }
+
                 spawnItemOnBox(block, block.type)
                 playSurpriseBlockSound()
 
                 if (block.type === "coin") {
+                    block.coinsLeft--
                     gameState.score += 50
+                    if (block.coinsLeft <= 0) {
+                        block.hit = true
+                        block.element.classList.add("hit")
+                    }
+                } else {
+                    block.hit = true
+                    block.element.classList.add("hit")
                 }
+            }
+
+            // Land on top
+            if (player.velocityY > 0 && player.y < block.y) {
+                player.y = block.y - player.height
+                player.velocityY = 0
+                player.grounded = true
             }
 
             // Head collision - stop upward momentum
@@ -201,14 +223,23 @@ export function update() {
     }
 
     // Pipe interaction to next level
-    for (let pipe of gameObjects.pipes) {
-        if (player.grounded &&
-            player.x + player.width > pipe.x &&
-            player.x < pipe.x + pipe.width &&
-            Math.abs(player.y + player.height - pipe.y) < 5 &&
-            gameState.keys["ArrowDown"]) {
-            playPipeSound()
-            nextLevel()
+    if (!player.enteringPipe) {
+        for (let pipe of gameObjects.pipes) {
+            if (player.grounded &&
+                player.x + player.width > pipe.x &&
+                player.x < pipe.x + pipe.width &&
+                Math.abs(player.y + player.height - pipe.y) < 5 &&
+                gameState.keys["ArrowDown"]) {
+                player.enteringPipe = true
+                player.velocityX = 0
+                player.element.classList.add("entering-pipe")
+                playPipeSound()
+                setTimeout(() => {
+                    player.enteringPipe = false
+                    player.element.classList.remove("entering-pipe")
+                    nextLevel()
+                }, 600)
+            }
         }
     }
 

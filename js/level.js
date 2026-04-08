@@ -3,7 +3,7 @@ import { gameState, player, gameObjects } from "./state.js"
 import { levels } from "./levels.js"
 import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
-import { playDeathSound } from "./sounds.js"
+import { playDeathSound, playEnemyDefeatSound } from "./sounds.js"
 
 export function loadLevel(levelIndex) {
     if (levelIndex >= levels.length) {
@@ -17,9 +17,11 @@ export function loadLevel(levelIndex) {
     const level = levels[levelIndex]
     const gameArea = document.getElementById("game-area")
 
-    // Set sunset theme for level 2
+    // Set background theme per level
     if (levelIndex === 1) {
         gameArea.style.background = "linear-gradient(to bottom, #FFB366 0%, #FF8C42 45%, #FF6B9D 85%, #8B4789 100%)"
+    } else if (levelIndex === 2) {
+        gameArea.style.background = "linear-gradient(to bottom, #0a0a2e 0%, #0d0d3b 60%, #1a1a2e 85%, #2d1b4e 100%)"
     } else {
         gameArea.style.background = "linear-gradient(to bottom, #5C94FC 85%, #228B22 85%, #228B22 100%)"
     }
@@ -41,6 +43,23 @@ export function loadLevel(levelIndex) {
     player.element.className = classNames.join(" ")
 
     updateElementPosition(player.element, player.x, player.y)
+
+    // Create mountains first so everything else renders in front
+    if (level.mountains) {
+        level.mountains.forEach((mountainData) => {
+            const color = mountainData.color || "#c4956a"
+            const edgeColor = mountainData.edgeColor || "#6b3f1f"
+            const mountain = createElement("div", "mountain", {
+                left: mountainData.x + "px",
+                bottom: "60px",
+                width: mountainData.width + "px",
+                height: mountainData.height + "px",
+                background: color,
+                filter: `drop-shadow(-3px 0 0 ${edgeColor}) drop-shadow(3px 0 0 ${edgeColor}) drop-shadow(0 -3px 0 ${edgeColor})`,
+            })
+            gameArea.appendChild(mountain)
+        })
+    }
 
     // Create platforms
     level.platforms.forEach((platformData, index) => {
@@ -124,22 +143,19 @@ export function loadLevel(levelIndex) {
             top: pipeData.y + "px",
         })
 
-        const pipeTopLeft = createElement("div", "pipe-top")
-        const pipeTopRight = createElement("div", "pipe-top-right")
-        const pipeBottomLeft = createElement("div", "pipe-bottom")
-        const pipeBottomRight = createElement("div", "pipe-bottom-right")
+        const pipeHead = createElement("div", "pipe-head")
+        const pipeBody = createElement("div", "pipe-body")
 
-        pipe.append(pipeTopLeft, pipeTopRight, pipeBottomLeft, pipeBottomRight)
+        pipe.append(pipeHead, pipeBody)
 
         gameArea.appendChild(pipe)
 
         // Create arrow above pipe
         const arrow = createElement("div", "pipe-arrow", {
-            left: (pipeData.x + 5) + "px",
+            left: (pipeData.x - 7) + "px",
             top: (pipeData.y - 50) + "px",
         })
-        arrow.textContent = "▼"
-        gameArea.appendChild(arrow)
+gameArea.appendChild(arrow)
 
         gameObjects.pipes.push({
             element: pipe,
@@ -161,6 +177,40 @@ export function loadLevel(levelIndex) {
             gameArea.appendChild(cloud)
         })
     }
+
+    // Create stars (night level)
+    if (level.stars) {
+        level.stars.forEach((starData) => {
+            const star = createElement("div", "night-star", {
+                left: starData.x + "px",
+                top: starData.y + "px",
+            })
+            gameArea.appendChild(star)
+        })
+    }
+
+    // Create moon (night level)
+    if (level.moon) {
+        const moon = createElement("div", "crescent-moon", {
+            left: level.moon.x + "px",
+            top: level.moon.y + "px",
+        })
+        gameArea.appendChild(moon)
+
+        // Easter egg: click the moon to crush all enemies
+        moon.style.cursor = "pointer"
+        moon.addEventListener("click", () => {
+            moon.classList.add("moon-smash")
+            gameObjects.enemies.forEach(enemy => {
+                if (!enemy.alive) return
+                enemy.alive = false
+                enemy.element.remove()
+                gameState.score += 100
+            })
+            playEnemyDefeatSound()
+            setTimeout(() => moon.classList.remove("moon-smash"), 400)
+        }, { once: true })
+    }
 }
 
 export function clearLevel() {
@@ -169,6 +219,10 @@ export function clearLevel() {
             obj.element.remove()
         }
     })
+
+    // Remove decorative elements not tracked in gameObjects
+    const gameArea = document.getElementById("game-area")
+    gameArea.querySelectorAll(".mountain, .cloud, .night-star, .crescent-moon, .pipe-arrow").forEach(el => el.remove())
 
     // Mutate the existing gameObjects instead of reassigning
     gameObjects.platforms = []
@@ -195,14 +249,13 @@ export function loseLife() {
     if (gameState.lives <= 0) {
         showGameOver(false)
     } else {
-        player.x = 50
-        player.y = 340
-        player.velocityX = 0
-        player.velocityY = 0
         player.big = false
         player.bigTimer = 0
-        player.element.classList.remove("big")
+        player.invincible = false
+        player.invincibilityTimer = 0
+        player.element.className = ""
         player.width = 20
         player.height = 20
+        loadLevel(gameState.level - 1)
     }
 }

@@ -7,13 +7,14 @@ const {
   MUSHROOM_GRAVITY,
   MUSHROOM_POP_FRAMES,
   MUSHROOM_INITIAL_VELOCITY,
-  COIN_FLOAT_DURATION
+  COIN_FLOAT_DURATION,
+  COIN_BLOCK_COUNT
 } = GAME_SETTINGS
 
 export function spawnItemOnBox(block, type) {
     // On level 2, if Mario is big, spawn a power star instead of mushroom
     let spawnType = type
-    if (type === "mushroom" && gameState.level === 2 && player.big) {
+    if (type === "mushroom" && gameState.level >= 2 && player.big) {
         spawnType = "power-star"
     }
 
@@ -27,11 +28,12 @@ export function spawnItemOnBox(block, type) {
     item.style.top = block.y + "px"
     container.appendChild(item)
 
+    const size = spawnType === "power-star" ? 32 : 20
     const itemObj = {
         x: block.x,
-        y: block.y - 20,
-        width: 20,
-        height: 20,
+        y: block.y - size,
+        width: size,
+        height: size,
         element: item,
         velocityY: 0,
         frames: 0,
@@ -113,9 +115,11 @@ export function spawnItemOnBox(block, type) {
     } else if (type === "coin") {
 
         function floatUp() {
-            itemObj.y -= 1
-            item.style.top = itemObj.y + "px"
             itemObj.frames++
+            itemObj.y -= 1.5
+            const progress = itemObj.frames / COIN_FLOAT_DURATION
+            item.style.top = itemObj.y + "px"
+            item.style.opacity = 1 - progress
 
             if (itemObj.frames < COIN_FLOAT_DURATION) {
                 requestAnimationFrame(floatUp)
@@ -127,3 +131,25 @@ export function spawnItemOnBox(block, type) {
         floatUp()
     }
 }
+
+export function killEnemy(enemy) {
+    enemy.alive = false
+    enemy.element.classList.add("dead")
+    let vy = -7
+    const gravity = 0.4
+
+    function bounce() {
+        vy += gravity
+        enemy.y += vy
+        enemy.element.style.top = enemy.y + "px"
+        if (enemy.y < 500) {
+            requestAnimationFrame(bounce)
+        } else {
+            enemy.element.remove()
+        }
+    }
+
+    requestAnimationFrame(bounce)
+}
+
+export { COIN_BLOCK_COUNT }
