@@ -2,7 +2,7 @@
 import { gameState, player, gameObjects } from "./state.js"
 import { GAME_SETTINGS } from "./settings.js"
 import { checkCollision } from "./collision.js"
-import { spawnItemOnBox } from "./entities.js"
+import { spawnItemOnBox, killEnemy } from "./entities.js"
 import { loseLife, nextLevel } from "./level.js"
 import { updateUI } from "./ui.js"
 import { updateElementPosition } from "./dom.js"
@@ -104,15 +104,13 @@ export function update() {
         if (checkCollision(player, enemy)) {
             if (player.velocityY > 0 && player.y < enemy.y) {
                 // Jump on enemy
-                enemy.alive = false
-                enemy.element.remove()
+                killEnemy(enemy)
                 player.velocityY = JUMP_FORCE * 0.7
                 gameState.score += 100
                 playEnemyDefeatSound()
             } else if (player.invincible) {
                 // Defeat enemy just by touching while invincible
-                enemy.alive = false
-                enemy.element.remove()
+                killEnemy(enemy)
                 gameState.score += 100
                 playEnemyDefeatSound()
             } else {

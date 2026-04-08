@@ -4,6 +4,7 @@ import { levels } from "./levels.js"
 import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
 import { playDeathSound, playEnemyDefeatSound } from "./sounds.js"
+import { killEnemy } from "./entities.js"
 
 export function loadLevel(levelIndex) {
     if (levelIndex >= levels.length) {
@@ -203,8 +204,7 @@ gameArea.appendChild(arrow)
             moon.classList.add("moon-smash")
             gameObjects.enemies.forEach(enemy => {
                 if (!enemy.alive) return
-                enemy.alive = false
-                enemy.element.remove()
+                killEnemy(enemy)
                 gameState.score += 100
             })
             playEnemyDefeatSound()

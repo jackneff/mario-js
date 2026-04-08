@@ -135,21 +135,12 @@ export function spawnItemOnBox(block, type) {
 export function killEnemy(enemy) {
     enemy.alive = false
     enemy.element.classList.add("dead")
-    let vy = -7
-    const gravity = 0.4
-
-    function bounce() {
-        vy += gravity
-        enemy.y += vy
-        enemy.element.style.top = enemy.y + "px"
-        if (enemy.y < 500) {
-            requestAnimationFrame(bounce)
-        } else {
-            enemy.element.remove()
-        }
-    }
-
-    requestAnimationFrame(bounce)
+    console.log("Animation:", getComputedStyle(enemy.element).animation)
+    console.log("Transform:", getComputedStyle(enemy.element).transform)
+    
+    setTimeout(() => {
+        enemy.element.remove()
+    }, 800)
 }
 
 export { COIN_BLOCK_COUNT }
