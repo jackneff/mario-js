@@ -6,6 +6,7 @@ import { spawnItemOnBox } from "./entities.js"
 import { loseLife, nextLevel } from "./level.js"
 import { updateUI } from "./ui.js"
 import { updateElementPosition } from "./dom.js"
+import { playCoinSound, playSurpriseBlockSound, playPipeSound } from "./sounds.js"
 
 export function gameLoop() {
     if (!gameState.gameRunning) return
@@ -114,8 +115,10 @@ export function update() {
     for (let coin of gameObjects.coins) {
         if (!coin.collected && checkCollision(player, coin)) {
             coin.collected = true
-            coin.element.remove()
+            coin.element.style.display = 'none'
+            setTimeout(() => coin.element.remove(), 0)
             gameState.score += 50
+            playCoinSound()
         }
     }
 
@@ -125,6 +128,7 @@ export function update() {
             block.hit = true
             block.element.classList.add("hit")
             spawnItemOnBox(block, block.type)
+            playSurpriseBlockSound()
 
             if (block.type === "mushroom") {
                 player.big = true
@@ -146,6 +150,7 @@ export function update() {
             player.x < pipe.x + pipe.width &&
             Math.abs(player.y + player.height - pipe.y) < 5 &&
             gameState.keys["ArrowDown"]) {
+            playPipeSound()
             nextLevel()
         }
     }
