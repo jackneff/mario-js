@@ -141,23 +141,31 @@ export function update() {
     for (let enemy of gameObjects.enemies) {
         if (!enemy.alive) continue
 
-        enemy.x += enemy.speed * enemy.direction
-
-        let onPlatform = false
-        // Reverse direction at platform edges or boundaries
-        for (let platform of gameObjects.platforms) {
-            if (enemy.x + enemy.width > platform.x &&
-                enemy.x < platform.x + platform.width &&
-                enemy.y + enemy.height >= platform.y - 5 &&
-                enemy.y + enemy.height <= platform.y + 5
-            ) {
-                onPlatform = true
-                break
+        if (enemy.type === "green") {
+            // Flying enemy — vertical patrol between patrolTop and patrolBottom
+            enemy.y += enemy.speed * enemy.direction
+            if (enemy.y <= enemy.patrolTop || enemy.y >= enemy.patrolBottom) {
+                enemy.direction *= -1
             }
-        }
+        } else {
+            // Ground enemy — horizontal patrol, reverse at platform edges or screen bounds
+            enemy.x += enemy.speed * enemy.direction
 
-        if (!onPlatform || enemy.x <= 0 || enemy.x >= SCREEN_WIDTH) {
-            enemy.direction *= -1
+            let onPlatform = false
+            for (let platform of gameObjects.platforms) {
+                if (enemy.x + enemy.width > platform.x &&
+                    enemy.x < platform.x + platform.width &&
+                    enemy.y + enemy.height >= platform.y - 5 &&
+                    enemy.y + enemy.height <= platform.y + 5
+                ) {
+                    onPlatform = true
+                    break
+                }
+            }
+
+            if (!onPlatform || enemy.x <= 0 || enemy.x >= SCREEN_WIDTH) {
+                enemy.direction *= -1
+            }
         }
 
         updateElementPosition(enemy.element, enemy.x, enemy.y)
@@ -183,7 +191,7 @@ export function update() {
                     const dims = getPlayerDimensions(false, gameState.luigiMode)
                     player.width = dims.width
                     player.height = dims.height
-                } else if (player.grounded) {
+                } else if (player.grounded || enemy.type === "green") {
                     loseLife()
                 }
             }

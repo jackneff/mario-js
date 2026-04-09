@@ -78,6 +78,7 @@ export const levels = [
     enemies: [
       { x: 350, y: 344, type: "purple" },
       { x: 650, y: 344, type: "purple" },
+      { x: 540, y: 190, type: "green", patrolTop: 110, patrolBottom: 270 },
     ],
     coins: [
       { x: 170, y: 240 },
@@ -153,6 +154,8 @@ export const levels = [
       { x: 650, y: 344, type: "purple" },
       { x: 290, y: 244, type: "brown" },
       { x: 580, y: 254, type: "purple" },
+      { x: 185, y: 200, type: "green", patrolTop: 120, patrolBottom: 280 },
+      { x: 490, y: 185, type: "green", patrolTop: 110, patrolBottom: 265 },
     ],
     coins: [
       { x: 110, y: 230 },

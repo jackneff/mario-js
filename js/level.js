@@ -106,6 +106,9 @@ export function loadLevel(levelIndex) {
             height: 20,
             direction: -1,
             speed: 1,
+            type: enemyData.type,
+            patrolTop: enemyData.patrolTop,
+            patrolBottom: enemyData.patrolBottom,
             id: "enemy-" + index,
             alive: true
         })
