@@ -53,18 +53,19 @@ export function showGameOver(won) {
   if (isTopTen(gameState.score)) {
     showNameEntry();
   } else {
-    setTimeout(() => {
-      elements.restartButton.focus();
-    }, 0);
+    setTimeout(() => elements.restartButton.focus(), 0);
   }
 
   elements.gameOver.style.display = "block";
 
-  const handleKeyPress = () => {
-    elements.restartButton.click();
+  const handleAnyKey = () => {
+    if (elements.nameEntry.style.display === "none") {
+      document.removeEventListener("keydown", handleAnyKey);
+      elements.restartButton.click();
+    }
   };
 
-  elements.restartButton.addEventListener("keydown", handleKeyPress, { once: false });
+  document.addEventListener("keydown", handleAnyKey);
 }
 
 function showNameEntry() {
