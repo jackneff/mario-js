@@ -690,7 +690,8 @@ body {
 }
 
 .mountain.night {
-  filter: drop-shadow(-3px 0 0 #05050a) drop-shadow(3px 0 0 #05050a) drop-shadow(0 -3px 0 #05050a)
+  filter: drop-shadow(-3px 0 0 #05050a) drop-shadow(3px 0 0 #05050a)
+    drop-shadow(0 -3px 0 #05050a)
     drop-shadow(0 0 10px rgba(255, 255, 255, 0.25));
 }
 
@@ -919,20 +920,24 @@ body {
 }
 
 #restart-button {
-  background-color: #1d12b6;
-  color: #fff;
+  background-color: #ffd700;
+  color: #5c5c5c;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   padding: 1.5rem 5rem;
   margin: 20px;
   cursor: pointer;
-  font-family: "Courier New", monospace;s
+  font-family: "Courier New", monospace;
+  letter-spacing: 3px;
 }
 
 #restart-button:hover {
-  background-color: #160e8d;
+  background-color: #ffff00;
+  color: black;
+  box-shadow: 0 0 25px 3px white;
+  font-weight: bold;
 }
 
 #name-entry {
