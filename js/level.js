@@ -4,7 +4,7 @@ import { levels } from "./levels.js"
 import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
 import { playDeathSound } from "./sounds.js"
-import { stopGameLoop } from "./loop.js"
+import { stopGameLoop, resetIdleState } from "./loop.js"
 import { getPlayerDimensions } from "./settings.js"
 
 export function loadLevel(levelIndex) {
@@ -12,6 +12,8 @@ export function loadLevel(levelIndex) {
         showGameOver(true)
         return
     }
+
+    resetIdleState()
 
     // Clearing existing objects
     clearLevel()

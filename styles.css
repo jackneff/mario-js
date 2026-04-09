@@ -516,8 +516,8 @@ body {
     #ffdd00 45%,
     #ffdd00 100%
   );
-  border: 1px solid #cc0000;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  /* border: 1px solid #cc0000; */
+  /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); */
   z-index: 30;
 }
 
@@ -527,12 +527,10 @@ body {
   width: 3px;
   height: 3px;
   background: #fff;
-  border-radius: 50%;
   top: 8px;
   left: 4px;
-  box-shadow:
-    6px 0 0 #fff,
-    12px 0 0 #fff;
+  box-shadow: 6px 0 0 #fff;
+  box-shadow: 6px 0 0 #fff;
 }
 
 .power-star {
@@ -967,7 +965,7 @@ body {
 }
 
 #restart-button:hover {
-  background-color: #ffff00;
+  background-color: #00cc00;
   color: rgb(61, 61, 61);
   box-shadow: 0 0 25px 3px rgb(204, 252, 181);
   font-weight: bold;
@@ -1069,4 +1067,135 @@ body {
   background: rgba(255, 255, 0, 0.1);
   padding: 3px 5px;
   border-radius: 3px;
+}
+
+/* Idle thought bubble */
+.thought-bubble {
+  position: absolute;
+  background: #fff;
+  border: 2px solid #444;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  z-index: 200;
+  pointer-events: none;
+  animation: thoughtAppear 0.3s ease-out;
+}
+
+/* Thought bubble tail — two small circles pointing down-left toward Mario */
+.thought-bubble::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 2px solid #444;
+  border-radius: 50%;
+  bottom: -12px;
+  left: 1px;
+}
+
+.thought-bubble::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border: 2px solid #444;
+  border-radius: 50%;
+  bottom: -21px;
+  left: -4px;
+}
+
+@keyframes thoughtAppear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Idle sleep ZZZs */
+.sleep-zzz {
+  position: absolute;
+  z-index: 200;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.sleep-zzz span {
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  color: #88aaff;
+  opacity: 0;
+  animation: zFloat 1.8s ease-in infinite;
+}
+
+.sleep-zzz span:nth-child(1) {
+  font-size: 13px;
+  animation-delay: 0s;
+}
+.sleep-zzz span:nth-child(2) {
+  font-size: 10px;
+  animation-delay: 0.6s;
+}
+.sleep-zzz span:nth-child(3) {
+  font-size: 7px;
+  animation-delay: 1.2s;
+}
+
+@keyframes zFloat {
+  0% {
+    transform: translate(0, 0) rotate(-8deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(12px, -28px) rotate(8deg);
+    opacity: 0;
+  }
+}
+
+/* Mario sleeping pose */
+#mario.sleeping {
+  animation: marioSleep 3s ease-in-out infinite;
+}
+
+#mario.sleeping::before {
+  width: 6px;
+  height: 1px;
+  border-radius: 0 0 2px 2px;
+  top: 10px;
+  left: 2px;
+}
+
+#mario.sleeping::after {
+  width: 6px;
+  height: 1px;
+  border-radius: 0 0 2px 2px;
+  top: 10px;
+  right: 2px;
+}
+
+@keyframes marioSleep {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
 }

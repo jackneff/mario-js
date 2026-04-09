@@ -22,6 +22,10 @@ export const GAME_SETTINGS = {
   COIN_FLOAT_DURATION: 60,
   COIN_BLOCK_COUNT: 5,
 
+  // Idle animations (in frames at ~60fps)
+  IDLE_THINK_FRAMES: 600,   // 10s — show thought bubble
+  IDLE_SLEEP_FRAMES: 1200,  // 20s — fall asleep
+
   // UI
   GAME_OVER_MESSAGE: "Congrats!  You won!",
   LEADERBOARD_SIZE: 3,

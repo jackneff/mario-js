@@ -1,6 +1,6 @@
 // Entry point
 import { gameState, player, elements } from "./state.js"
-import { gameLoop, stopGameLoop } from "./loop.js"
+import { gameLoop, stopGameLoop, resetIdleState } from "./loop.js"
 import { loadLevel } from "./level.js"
 import { setupInput } from "./input.js"
 import { GAME_SETTINGS, getPlayerDimensions } from "./settings.js"
@@ -13,6 +13,7 @@ export function initGame() {
 
 export function restartGame() {
     stopGameLoop()
+    resetIdleState()
 
     Object.assign(gameState, {
         score: 0,

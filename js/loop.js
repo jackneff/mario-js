@@ -9,9 +9,57 @@ import { updateElementPosition } from "./dom.js"
 import { playCoinSound, playSurpriseBlockSound, playPipeSound, playEnemyDefeatSound, playMushroomSound, playStarSound } from "./sounds.js"
 import { COIN_BLOCK_COUNT } from "./entities.js"
 
-const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, INVINCIBILITY_DURATION, SCREEN_WIDTH, DEATH_BOUNDARY } = GAME_SETTINGS
+const { GRAVITY, JUMP_FORCE, MOVE_SPEED, ENEMY_SPEED, INVINCIBILITY_DURATION, SCREEN_WIDTH, DEATH_BOUNDARY, IDLE_THINK_FRAMES, IDLE_SLEEP_FRAMES } = GAME_SETTINGS
 
 let animationFrameId = null
+
+// Idle tracking
+let idleFrames = 0
+let thoughtBubble = null
+let sleepEl = null
+
+function showThoughtBubble() {
+    if (thoughtBubble) return
+    thoughtBubble = document.createElement("div")
+    thoughtBubble.className = "thought-bubble"
+    thoughtBubble.textContent = "?"
+    elements.gameArea.appendChild(thoughtBubble)
+    positionIdleBubbles()
+}
+
+function showSleepEffect() {
+    if (sleepEl) return
+    // Dismiss thought bubble when falling asleep
+    if (thoughtBubble) { thoughtBubble.remove(); thoughtBubble = null }
+    sleepEl = document.createElement("div")
+    sleepEl.className = "sleep-zzz"
+    sleepEl.innerHTML = "<span>Z</span><span>z</span><span>z</span>"
+    elements.gameArea.appendChild(sleepEl)
+    elements.mario.classList.add("sleeping")
+    positionIdleBubbles()
+}
+
+function positionIdleBubbles() {
+    if (thoughtBubble) {
+        thoughtBubble.style.left = (player.x + player.width + 4) + "px"
+        thoughtBubble.style.top  = (player.y - 46) + "px"
+    }
+    if (sleepEl) {
+        sleepEl.style.left = (player.x + player.width + 2) + "px"
+        sleepEl.style.top  = (player.y - 22) + "px"
+    }
+}
+
+function removeIdleBubbles() {
+    if (thoughtBubble) { thoughtBubble.remove(); thoughtBubble = null }
+    if (sleepEl)       { sleepEl.remove();        sleepEl = null }
+    elements.mario.classList.remove("sleeping")
+}
+
+export function resetIdleState() {
+    idleFrames = 0
+    removeIdleBubbles()
+}
 
 export function gameLoop() {
     if (!gameState.gameRunning) return
@@ -277,6 +325,26 @@ export function update() {
     }
 
     updateElementPosition(elements.mario, player.x, player.y)
+
+    // Idle detection — reset on key presses, horizontal movement, or an actual jump
+    // Note: player.grounded alternates each frame due to platform physics, so we don't use it here
+    const isActive = gameState.keys["ArrowLeft"] || gameState.keys["ArrowRight"] ||
+                     gameState.keys["KeyA"]       || gameState.keys["KeyD"]       ||
+                     gameState.keys["Space"]       ||
+                     Math.abs(player.velocityX) > 0.1 ||
+                     player.velocityY < -1  // actively jumping (not the small gravity bounce)
+
+    if (isActive) {
+        if (idleFrames > 0) {
+            idleFrames = 0
+            removeIdleBubbles()
+        }
+    } else {
+        idleFrames++
+        if (idleFrames === IDLE_THINK_FRAMES) showThoughtBubble()
+        if (idleFrames === IDLE_SLEEP_FRAMES) showSleepEffect()
+        positionIdleBubbles()
+    }
 
     updateUI()
 }
