@@ -3,8 +3,7 @@ import { gameState, player, gameObjects, elements } from "./state.js"
 import { levels } from "./levels.js"
 import { createElement, updateElementPosition } from "./dom.js"
 import { showGameOver } from "./ui.js"
-import { playDeathSound, playEnemyDefeatSound } from "./sounds.js"
-import { killEnemy } from "./entities.js"
+import { playDeathSound } from "./sounds.js"
 import { stopGameLoop } from "./loop.js"
 import { getPlayerDimensions } from "./settings.js"
 
@@ -209,17 +208,45 @@ gameArea.appendChild(arrow)
         })
         gameArea.appendChild(moon)
 
-        // Easter egg: click the moon to crush all enemies
+        // Easter egg: click the moon to spawn blue coins worth 10x for 10 seconds
         moon.style.cursor = "pointer"
         moon.addEventListener("click", () => {
             moon.classList.add("moon-smash")
-            gameObjects.enemies.forEach(enemy => {
-                if (!enemy.alive) return
-                killEnemy(enemy)
-                gameState.score += 100
-            })
-            playEnemyDefeatSound()
             setTimeout(() => moon.classList.remove("moon-smash"), 400)
+
+            const blueCoinPositions = [
+                { x: 50,  y: 320 }, { x: 150, y: 250 }, { x: 280, y: 220 },
+                { x: 350, y: 160 }, { x: 430, y: 180 }, { x: 520, y: 200 },
+                { x: 580, y: 230 }, { x: 650, y: 160 }, { x: 720, y: 160 },
+                { x: 400, y: 290 },
+            ]
+
+            blueCoinPositions.forEach((pos, index) => {
+                const coinEl = createElement("div", "blue-coin", {
+                    left: pos.x + "px",
+                    top: pos.y + "px",
+                })
+                elements.coinsLayer.appendChild(coinEl)
+                gameObjects.blueCoins.push({
+                    element: coinEl,
+                    x: pos.x,
+                    y: pos.y,
+                    width: 20,
+                    height: 20,
+                    collected: false,
+                    id: "blue-coin-" + index
+                })
+            })
+
+            // Vanish after 10 seconds
+            setTimeout(() => {
+                gameObjects.blueCoins.forEach(coin => {
+                    if (!coin.collected) {
+                        coin.element.remove()
+                    }
+                })
+                gameObjects.blueCoins = []
+            }, 10000)
         }, { once: true })
     }
 }
@@ -238,6 +265,7 @@ export function clearLevel() {
     gameObjects.platforms = []
     gameObjects.enemies = []
     gameObjects.coins = []
+    gameObjects.blueCoins = []
     gameObjects.surpriseBlocks = []
     gameObjects.pipes = []
     gameObjects.mushrooms = []

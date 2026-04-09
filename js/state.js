@@ -71,6 +71,7 @@ export const gameObjects = {
     platforms: [],
     enemies: [],
     coins: [],
+    blueCoins: [],
     surpriseBlocks: [],
     pipes: [],
     mushrooms: [],

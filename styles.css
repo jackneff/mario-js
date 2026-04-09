@@ -588,6 +588,39 @@ body {
   }
 }
 
+.blue-coin {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, #66eeff, #0055ff);
+  border: 2px solid #003dcc;
+  border-radius: 50%;
+  box-shadow:
+    inset -1px -1px 2px rgba(0, 0, 0, 0.3),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.5),
+    0 0 10px rgba(0, 150, 255, 0.9);
+  animation:
+    coinSpin 1s linear infinite,
+    blueCoinPulse 1.5s ease-in-out infinite;
+  z-index: 9;
+}
+
+@keyframes blueCoinPulse {
+  0%,
+  100% {
+    box-shadow:
+      inset -1px -1px 2px rgba(0, 0, 0, 0.3),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.5),
+      0 0 10px rgba(0, 150, 255, 0.9);
+  }
+  50% {
+    box-shadow:
+      inset -1px -1px 2px rgba(0, 0, 0, 0.3),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.5),
+      0 0 24px rgba(0, 220, 255, 1);
+  }
+}
+
 .surprise-block {
   position: absolute;
   width: 20px;
@@ -935,8 +968,8 @@ body {
 
 #restart-button:hover {
   background-color: #ffff00;
-  color: black;
-  box-shadow: 0 0 25px 3px white;
+  color: rgb(61, 61, 61);
+  box-shadow: 0 0 25px 3px rgb(204, 252, 181);
   font-weight: bold;
 }
 

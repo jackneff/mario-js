@@ -153,6 +153,16 @@ export function update() {
         }
     }
 
+    // Blue coin collection (10x regular coin value = 500)
+    for (let coin of gameObjects.blueCoins) {
+        if (!coin.collected && checkCollision(player, coin)) {
+            coin.collected = true
+            coin.element.remove()
+            gameState.score += 500
+            playCoinSound()
+        }
+    }
+
     // Surprise blocks
     for (let block of gameObjects.surpriseBlocks) {
         if (checkCollision(player, block)) {
@@ -244,6 +254,12 @@ export function update() {
                 gameState.keys["ArrowDown"]) {
                 player.enteringPipe = true
                 player.velocityX = 0
+
+                // Center Mario over the pipe opening before the downward slide
+                const pipeCenterX = pipe.x + pipe.width / 2 - player.width / 2
+                player.x = pipeCenterX
+                updateElementPosition(elements.mario, player.x, player.y)
+
                 elements.mario.classList.add("entering-pipe")
                 playPipeSound()
                 setTimeout(() => {
